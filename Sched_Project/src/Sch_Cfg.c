@@ -52,12 +52,12 @@
 };*/
 
 const S_TASK_DESCRIPTOR cas_SchTaskDescriptorConfig[] = {
-	{0, MASK_3P125MS, 	TASK_3P125MS, 	Sch_Task_3P125MS},
-	{1, MASK_6P25MS,	TASK_6P25MS, 	Sch_Task_6P25MS },
-	{2, MASK_12P5MS, 	TASK_12P5MS, 	Sch_Task_12P5MS },
-	{3, MASK_25MS, 		TASK_25MS, 		Sch_Task_25MS   },
+	{0, MASK_5MS, 	TASK_5MS, 	Sch_Task_5MS  },
+	{1, MASK_10MS,	TASK_10MS, 	Sch_Task_10MS },
+	{2, MASK_40MS, 	TASK_40MS, 	Sch_Task_40MS },
+	/*{3, MASK_25MS, 		TASK_25MS, 		Sch_Task_25MS   },
 	{5, MASK_50MS, 		TASK_50MS, 		Sch_Task_50MS   },
-	{6, MASK_100MS, 	TASK_100MS, 	Sch_Task_100MS  },
+	{6, MASK_100MS, 	TASK_100MS, 	Sch_Task_100MS  },*/
 };
 
 const S_SCH_CONFIG cs_SchConfig = {

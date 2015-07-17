@@ -170,7 +170,7 @@ S_SCH_CONTROL rs_SchControl = {
  		lp_TaskDescriptorPtr++;
  	}
   	
-    TIMER_LOAD_VALUE_CYCLES(49999U,0); /*781.25 us to cycles*/
+    TIMER_LOAD_VALUE_CYCLES(39999U,0); /* 625 us to cycles */
     TIMER_ENABLE_INT(0);
     TIMER_INIT();
   	
