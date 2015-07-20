@@ -3,31 +3,30 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Source:         %Sch_Tasks.c%
+* C Source:         %WindowLifter.c%
 * Instance:         1
 * %version:         1 %
 * %created_by:      Michele Balbi %
-* %date_created:    July 13 2015 %
+* %date_created:    July 17 2015 %
 *=============================================================================*/
-/* DESCRIPTION : C source code for the scheduler's configured tasks.          */
+/* DESCRIPTION : C source code for the Window Lifter's main functionality.    */
 /*============================================================================*/
-/* FUNCTION COMMENT : This file describes the C source used in the scheduler's*/
-/* tasks.                                                                     */
+/* FUNCTION COMMENT : This file describes the C source used in the Window     */
+/* Lifter initialization.                                                     */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Michele Balbi    */
+/*  1.0      | 17/07/2015  |                               | Michele Balbi    */
 /* 	First draft.                                                              */
 /*============================================================================*/
 
 /* Includes */
 /* -------- */
 #include "conti_typedefs.h"
-#include "Sch_Tasks.h"
-#include "MPC5606B_GPIO_lib.h"
-#include "WindowLifter_PeriodicTasks.h"
+#include "WindowLifter.h"
+
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -50,15 +49,14 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTE RAM variables */
-
-
-
+T_UBYTE rub_led_level = LED_LEVEL_MAX;
 
 /* WORD RAM variables */
 
 
 /* LONG and STRUCTURE RAM variables */
-
+E_WINDOWLIFTER_MOVEMENTLIST re_move = DISABLED;
+E_WINDOWLIFTER_BUTTONLIST re_button_pressed = NONE;
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -82,61 +80,50 @@
 /* Private functions */
 /* ----------------- */
 
-
+ 
 /* Exported functions */
 /* ------------------ */
-/**************************************************************
- *  Name                 :	export_func
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
-
-void Sch_Task_1p25MS(void){
-
-	LED_TOGGLE(LED4);
+/*****************************************************************
+*  Name                 :	WindowLifter_StopMovement
+*  Description          :	Routine to stop the LED switching.
+*  Parameters           :	void
+*  Return               :	void
+*  Critical/explanation :   Change re_move to stop movement.
+							Turn OFF LED indicators.
+******************************************************************/
+void WindowLifter_StopMovement(void){
+	TIMER_STOP(4); /* Disable 400ms automatic recount. */
+	OUTPUT_LOW(UP_LED);
+	OUTPUT_LOW(DOWN_LED);
+	re_move=DISABLED;
 }
 
-void Sch_Task_5MS(void){
-	
-	static T_UBYTE lub_counter=0;
-	
-	lub_counter++;
-	
-	if(lub_counter==100){
-		LED_TOGGLE(LED1);	
-		lub_counter=0;
-	}
-}
-
-void Sch_Task_10MS(void){
-
-	LED_TOGGLE(LED2);
-}
-
-void Sch_Task_40MS(void){
-
-	static T_UBYTE lub_counter=0;
-	
-	lub_counter++;
-	
-	if(lub_counter==10){
-		LED_TOGGLE(LED3);
-		lub_counter=0;
-	}
-	
-}
-
-/*void Sch_Task_25MS(void){
-	LED_TOGGLE(LED4);
-}
-
-void Sch_Task_50MS(void){
-
-	
-}
-
-void Sch_Task_100MS(void){
-
-}*/
+ /*****************************************************************
+ *  Name                 :	WindowLifter_Move1LevelUp
+ *  Description          :	Routine to turn ON next LED.
+ *  Parameters           :	void
+ *  Return               :	void
+ *  Critical/explanation :  Turn ON next LED and keep OFF the UP
+ 							movement LED indicator.
+ ******************************************************************/
+ void WindowLifter_Move1LevelUp(void){
+ 	OUTPUT_HIGH(UP_LED);
+	OUTPUT_LOW(DOWN_LED);
+	rub_led_level++;
+	OUTPUT_HIGH(rub_led_level);
+ }
+ 
+ /*****************************************************************
+ *  Name                 :	WindowLifter_Move1LevelDown
+ *  Description          :	Routine to turn OFF next LED.
+ *  Parameters           :	void
+ *  Return               :	void
+ *  Critical/explanation :  Turn OFF next LED and keep ON the DOWN
+ 							movement LED indicator.
+ ******************************************************************/
+ void WindowLifter_Move1LevelDown(void){
+	OUTPUT_LOW(UP_LED);
+	OUTPUT_HIGH(DOWN_LED);
+	OUTPUT_LOW(rub_led_level);
+	rub_led_level--;
+ }

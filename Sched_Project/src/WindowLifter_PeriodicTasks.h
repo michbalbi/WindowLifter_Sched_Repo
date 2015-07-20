@@ -3,31 +3,32 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        %Sch_Tasks.h%
+* C Include:        %WindowLifter_PeriodicTasks.h%
 * Instance:         1
 * %version:         1 %
 * %created_by:      Michele Balbi %
-* %date_created:    July 13 2015 %
+* %date_created:    2015 %
 *=============================================================================*/
-/* DESCRIPTION : Header file for the Scheduler's configured tasks.            */
+/* DESCRIPTION : Header file for the timer functions.                         */
 /*============================================================================*/
-/* FUNCTION COMMENT :   										              */
-/*                                                                            */
+/* FUNCTION COMMENT :  This files contains the prototypes for the implemented */
+/* timer functions.                                                           */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Michele Balbi    */
-/* First Draft 																  */
+/*  1.0      | 10/07/2015  |                               | Michele Balbi    */
+/* First Draft.																  */
 /*============================================================================*/
 
-#ifndef _SCH_TASKS_H_                            /* To avoid double inclusion */
-#define _SCH_TASKS_H_
+#ifndef _TIMER_MODULE_H_                         /* To avoid double inclusion */
+#define _TIMER_MODULE_H_
 
 /* Includes */
 /* -------- */
-
+#include "conti_typedefs.h"
+#include "WindowLifter_Types.h"
 
 /* Exported types and constants */
 /* ---------------------------- */
@@ -53,13 +54,14 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTES */
-
+/*extern T_UBYTE rub_led_level;*/
 
 /* WORDS */
 
 
 /* LONGS and STRUCTURES */
-
+/*extern MovementList re_move;
+extern ButtonList re_button_pressed;*/
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -69,15 +71,19 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void Sch_Task_1p25MS(void);
-extern void Sch_Task_5MS(void);
-extern void Sch_Task_10MS(void);
-extern void Sch_Task_40MS(void);
+extern void WindowLifter_TimersInit(void);
+extern void WindowLifter_Task_10MS(void);
+extern void WindowLifter_Task_400MS(void);
+extern void WindowLifter_Task_500MS(void);
+extern void WindowLifter_Task_5S(void);
+
 
 /* Functions macros */
 
 
 /* Exported defines */
+
+
 
 
 #endif

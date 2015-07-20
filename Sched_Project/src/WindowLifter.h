@@ -3,13 +3,13 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        %Sch_Tasks.h%
+* C Include:        %WindowLifter.h%
 * Instance:         1
 * %version:         1 %
 * %created_by:      Michele Balbi %
-* %date_created:    July 13 2015 %
+* %date_created:    July 17 2015 %
 *=============================================================================*/
-/* DESCRIPTION : Header file for the Scheduler's configured tasks.            */
+/* DESCRIPTION : Header file for the Window Lifter's main functionality.      */
 /*============================================================================*/
 /* FUNCTION COMMENT :   										              */
 /*                                                                            */
@@ -18,16 +18,16 @@
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Michele Balbi    */
+/*  1.0      | 17/07/2015  |                               | Michele Balbi    */
 /* First Draft 																  */
 /*============================================================================*/
 
-#ifndef _SCH_TASKS_H_                            /* To avoid double inclusion */
-#define _SCH_TASKS_H_
+#ifndef _SCH_H_                               /* To avoid double inclusion */
+#define _SCH_H_
 
 /* Includes */
 /* -------- */
-
+#include "WindowLifter_Types.h"
 
 /* Exported types and constants */
 /* ---------------------------- */
@@ -53,13 +53,14 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTES */
-
+extern T_UBYTE rub_led_level;
 
 /* WORDS */
 
 
 /* LONGS and STRUCTURES */
-
+extern E_WINDOWLIFTER_MOVEMENTLIST re_move;
+extern E_WINDOWLIFTER_BUTTONLIST re_button_pressed;
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -69,11 +70,10 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void Sch_Task_1p25MS(void);
-extern void Sch_Task_5MS(void);
-extern void Sch_Task_10MS(void);
-extern void Sch_Task_40MS(void);
-
+extern void WindowLifter_StopMovement(void);
+extern void WindowLifter_Move1LevelUp(void);
+extern void WindowLifter_Move1LevelDown(void);
+ 
 /* Functions macros */
 
 

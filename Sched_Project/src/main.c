@@ -32,6 +32,7 @@
 #include "MPC5606B_PIT_lib.h"
 #include "MemAlloc_Cfg.h"
 #include "Sch.h"
+/*#include "WindowLifter.h"*/
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */

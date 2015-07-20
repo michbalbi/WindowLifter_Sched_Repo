@@ -39,6 +39,7 @@ typedef void (*T_TASK_FUNCTION_PTR)(void);
 typedef T_UBYTE T_SCH_TASK_OFFSET;
 
 typedef enum{
+	MASK_1p25MS = 1,
 	MASK_5MS = 7,
 	MASK_10MS = 15,
 	MASK_40MS = 63
@@ -49,6 +50,7 @@ typedef enum{
 
 typedef enum{
 	TASK_BKG,
+	TASK_1p25MS,
 	TASK_5MS,
 	TASK_10MS,
 	TASK_40MS
