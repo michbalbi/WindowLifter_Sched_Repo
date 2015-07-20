@@ -32,6 +32,7 @@
 #include "MPC5606B_PIT_lib.h"
 #include "MemAlloc_Cfg.h"
 #include "Sch.h"
+/*#include "WindowLifter.h"*/
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -77,37 +78,17 @@
 /* Exported functions prototypes */
 /* ----------------------------- */
 
+
 /* Inline functions */
 /* ---------------- */
-/**************************************************************
- *  Name                 : inline_func	2
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
 
 
 /* Private functions */
 /* ----------------- */
-/**************************************************************
- *  Name                 : private_func
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
 
 
 /* Exported functions */
 /* ------------------ */
-/**************************************************************
- *  Name                 :	export_func
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
 
 
 
@@ -116,36 +97,18 @@
  *  Name                 :	main
  *  Description          :
  *  Parameters           :	void
- *  Return               :	void
+ *  Return               :	int
  *  Critical/explanation :  The main routine initializes the
  							peripherals used in this system.
  **************************************************************/
 int main(void) {
+
+	MemAllocInit(&MemAllocConfig);
 	
 	initModesAndClock();    /* Initialize mode entries and system clock */
 	disableWatchdog();      /* Disable watchdog */
 	initPeriClkGen();       /* Initialize peripheral clock generation for DSPIs */
-	
-	MemAllocInit(&MemAllocConfig);
-	
-	/*GPIO_AS_OUTPUT(PC2);
-	GPIO_AS_OUTPUT(PC3);
-	GPIO_AS_OUTPUT(PC4);
-	GPIO_AS_OUTPUT(PC5);
-	GPIO_AS_OUTPUT(PC6);
-	GPIO_AS_OUTPUT(PC7);
-	
-	OUTPUT_LOW(PC2);
-	OUTPUT_LOW(PC3);
-	OUTPUT_LOW(PC4);
-	OUTPUT_LOW(PC5);
-	OUTPUT_LOW(PC6);
-	OUTPUT_LOW(PC7);*/
-	
-	GPIO_AS_OUTPUT(LED1);
-	GPIO_AS_OUTPUT(LED2);
-	GPIO_AS_OUTPUT(LED3);
-	GPIO_AS_OUTPUT(LED4);
+	GPIO_Init();
 	
 	/* Interrupts init, SW Mode */
     INT_SW_VECTOR_MODE();

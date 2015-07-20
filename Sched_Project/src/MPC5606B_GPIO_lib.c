@@ -3,31 +3,28 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Source:         %Sch_Tasks.c%
+* C Source:         %MPC5606B_GPIO_lib.c%
 * Instance:         1
 * %version:         1 %
 * %created_by:      Michele Balbi %
-* %date_created:    July 13 2015 %
+* %date_created:    July 17 2015 %
 *=============================================================================*/
-/* DESCRIPTION : C source code for the scheduler's configured tasks.          */
+/* DESCRIPTION : C source code for GPIO configuration.                        */
 /*============================================================================*/
-/* FUNCTION COMMENT : This file describes the C source used in the scheduler's*/
-/* tasks.                                                                     */
+/* FUNCTION COMMENT : This file describes the C source code used to initialize*/
+/* the GPIO pins.                                                             */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Michele Balbi    */
-/* 	First draft.                                                              */
+/*  1.0      | 17/07/2015  |                               | Michele Balbi    */
+/* 	Added GPIO_Init() function.                                               */
 /*============================================================================*/
 
 /* Includes */
 /* -------- */
-#include "conti_typedefs.h"
-#include "Sch_Tasks.h"
 #include "MPC5606B_GPIO_lib.h"
-#include "WindowLifter_PeriodicTasks.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -50,8 +47,6 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTE RAM variables */
-
-
 
 
 /* WORD RAM variables */
@@ -85,58 +80,19 @@
 
 /* Exported functions */
 /* ------------------ */
-/**************************************************************
- *  Name                 :	export_func
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
-
-void Sch_Task_1p25MS(void){
-
-	LED_TOGGLE(LED4);
-}
-
-void Sch_Task_5MS(void){
+/********************************************************************************
+ *  Name                 :	GPIO_Init
+ *  Description          :	GPIO configuration function.
+ *  Parameters           :  void
+ *  Return               :	void
+ *  Critical/explanation :  This routine configures the GPIOs used in the 
+ 							application.
+ ********************************************************************************/
+ void GPIO_Init(void){
+ 
+ 	GPIO_AS_OUTPUT(LED1);
+	GPIO_AS_OUTPUT(LED2);
+	GPIO_AS_OUTPUT(LED3);
+	GPIO_AS_OUTPUT(LED4);
 	
-	static T_UBYTE lub_counter=0;
-	
-	lub_counter++;
-	
-	if(lub_counter==100){
-		LED_TOGGLE(LED1);	
-		lub_counter=0;
-	}
-}
-
-void Sch_Task_10MS(void){
-
-	LED_TOGGLE(LED2);
-}
-
-void Sch_Task_40MS(void){
-
-	static T_UBYTE lub_counter=0;
-	
-	lub_counter++;
-	
-	if(lub_counter==10){
-		LED_TOGGLE(LED3);
-		lub_counter=0;
-	}
-	
-}
-
-/*void Sch_Task_25MS(void){
-	LED_TOGGLE(LED4);
-}
-
-void Sch_Task_50MS(void){
-
-	
-}
-
-void Sch_Task_100MS(void){
-
-}*/
+ }

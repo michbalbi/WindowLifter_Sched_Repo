@@ -23,12 +23,16 @@
 /*----------------------------------------------------------------------------*/
 /*  1.1      | 06/07/2015  |                               | Michele Balbi    */
 /* Added GPIO macros to control alt functions and parallel writes.            */
+/*----------------------------------------------------------------------------*/
+/*  1.2      | 17/07/2015  |                               | Michele Balbi    */
+/* Added GPIO_Init() function prototype to export it.                         */
 /*============================================================================*/
 
 #ifndef _MPC5606B_GPIO_LIB_
 #define _MPC5606B_GPIO_LIB_
 
-
+/* Includes */
+/* -------- */
 #include "MPC5606B.h"
 
 /* Mappping pin number to GPIO[n] */
@@ -229,8 +233,54 @@
 #define LED_TOGGLE(channel)         (SIU.GPDO[channel].B.PDO ^= 1) 
 
 
+/* Exported types and constants */
+/* ---------------------------- */
+
+/* Types definition */
+/* typedef */
+
+
+/*==================================================*/ 
+/* Declaration of exported constants                */
+/*==================================================*/ 
+/* BYTE constants */
+
+
+/* WORD constants */
+
+
+/* LONG and STRUCTURE constants */
+
+
+
+/*======================================================*/ 
+/* Definition of RAM variables                          */
+/*======================================================*/ 
+/* BYTES */
+
+
+/* WORDS */
+
+
+/* LONGS and STRUCTURES */
+
+
+/*======================================================*/ 
+/* close variable declaration sections                  */
+/*======================================================*/ 
+
+/* Exported functions prototypes and macros */
+/* ---------------------------------------- */
+
+/* Functions prototypes */
+extern void GPIO_Init(void);
+
+/* Functions macros */
+
+
+/* Exported defines */
+
 
 
 
 #endif
-
