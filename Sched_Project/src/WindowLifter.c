@@ -26,7 +26,7 @@
 /* -------- */
 #include "conti_typedefs.h"
 #include "WindowLifter.h"
-
+#include "MPC5606B_GPIO_lib.h"
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -55,8 +55,8 @@ T_UBYTE rub_led_level = LED_LEVEL_MAX;
 
 
 /* LONG and STRUCTURE RAM variables */
-E_WINDOWLIFTER_MOVEMENTLIST re_move = DISABLED;
-E_WINDOWLIFTER_BUTTONLIST re_button_pressed = NONE;
+E_WINDOWLIFTER_CURRENTSTATE re_currentstate = WAIT_STATE;
+/*E_WINDOWLIFTER_INPUTSIGNAL re_inputsignal = NO_SIGNAL;*/
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -84,18 +84,49 @@ E_WINDOWLIFTER_BUTTONLIST re_button_pressed = NONE;
 /* Exported functions */
 /* ------------------ */
 /*****************************************************************
+*  Name                 :	WindowLifter_CheckLimits
+*  Description          :	Routine to stop the LED switching.
+*  Parameters           :	void
+*  Return               :	void
+*  Critical/explanation :   Change re_currentstate to stop movement.
+							Turn OFF LED indicators.
+******************************************************************/
+void WindowLifter_CheckLimits(void){
+	
+	if((re_currentstate==AUTO_UP_STATE || re_currentstate==MANUAL_UP_STATE) && rub_led_level==LED_LEVEL_MAX){
+ 		WindowLifter_StopMovement();
+ 	}
+ 	
+ 	if((re_currentstate==AUTO_DOWN_STATE || re_currentstate==MANUAL_DOWN_STATE) && rub_led_level<LED_LEVEL_MIN){
+ 		WindowLifter_StopMovement();
+ 	}
+ 	
+ 	if((re_currentstate==MANUAL_UP_STATE) && INPUT_STATE(UP_BUTTON)!=PRESSED){
+ 		WindowLifter_StopMovement();
+ 	}
+	
+	if((re_currentstate==MANUAL_DOWN_STATE) && INPUT_STATE(DOWN_BUTTON)!=PRESSED){
+ 		WindowLifter_StopMovement();
+ 	}
+ 	
+ 	if(re_currentstate==ANTI_PINCH_STATE && rub_led_level<LED_LEVEL_MIN){
+ 		WindowLifter_StopMovement();
+ 		re_currentstate=BLOCKED_STATE;
+ 	}
+}
+
+/*****************************************************************
 *  Name                 :	WindowLifter_StopMovement
 *  Description          :	Routine to stop the LED switching.
 *  Parameters           :	void
 *  Return               :	void
-*  Critical/explanation :   Change re_move to stop movement.
+*  Critical/explanation :   Change re_currentstate to stop movement.
 							Turn OFF LED indicators.
 ******************************************************************/
 void WindowLifter_StopMovement(void){
-	TIMER_STOP(4); /* Disable 400ms automatic recount. */
 	OUTPUT_LOW(UP_LED);
 	OUTPUT_LOW(DOWN_LED);
-	re_move=DISABLED;
+	re_currentstate=WAIT_STATE;
 }
 
  /*****************************************************************

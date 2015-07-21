@@ -29,7 +29,7 @@
 /* -------- */
 #include "conti_typedefs.h"
 #include "MPC5606B_INTERRUPTS_lib.h"
-#include "MPC5606B_GPIO_lib.h"
+/*#include "MPC5606B_GPIO_lib.h"*/
 #include "MPC5606B_PIT_lib.h"
 #include "Sch_Types.h"
 #include "Sch.h"
@@ -224,7 +224,7 @@ S_SCH_CONTROL rs_SchControl = {
  	T_UBYTE lub_i, lub_NumberOfTasks;
  	S_TASK_DESCRIPTOR * lp_TaskDescriptorPtr; 
  	
- 	LED_ON(LED4);
+ 	/*LED_ON(LED4);*/
  	TIMER_CLEAR_INT_FLAG(0);
  	lp_TaskDescriptorPtr = (S_TASK_DESCRIPTOR *)(rps_SchConfig_ptr->SchTaskDescriptor);
  
@@ -242,6 +242,6 @@ S_SCH_CONTROL rs_SchControl = {
    		lp_TaskDescriptorPtr++;
    		
    	}
-   	LED_OFF(LED4);
+   	/*LED_OFF(LED4);*/
  	
  }

@@ -29,7 +29,7 @@
 #include "MPC5606B_GPIO_lib.h"
 #include "MPC5606B_ClkInit.h"
 #include "MPC5606B_INTERRUPTS_lib.h"
-#include "MPC5606B_PIT_lib.h"
+/*#include "MPC5606B_PIT_lib.h"*/
 #include "MemAlloc_Cfg.h"
 #include "Sch.h"
 /*#include "WindowLifter.h"*/
@@ -102,25 +102,30 @@
  							peripherals used in this system.
  **************************************************************/
 int main(void) {
-
+	
 	MemAllocInit(&MemAllocConfig);
 	
 	initModesAndClock();    /* Initialize mode entries and system clock */
 	disableWatchdog();      /* Disable watchdog */
 	initPeriClkGen();       /* Initialize peripheral clock generation for DSPIs */
+	
+	/* GPIO initilization. Outputs and starting value, and inputs */
 	GPIO_Init();
 	
 	/* Interrupts init, SW Mode */
     INT_SW_VECTOR_MODE();
     
+    /* Scheduler initialization routine */
     Sch_Init(&cs_SchConfig);
     
+    /* Interrupts installation and initialization */
     INTC_InstallINTCInterruptHandler(Sch_OSTick, PIT0_Vector, PRIORITY13);
     INT_LOWER_CPR(PRIORITY0);
     INTC_InitINTCInterrupts(); 
     
+    /* Scheduler start routine */
     Sch_Start(); 
 	
-	for (;;) { 	} /* Execution shall never reach this for*/
+	for (;;) { 	} /* Execution shall never reach this loop*/
 }
 

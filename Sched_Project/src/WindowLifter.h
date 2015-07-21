@@ -53,14 +53,14 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTES */
-extern T_UBYTE rub_led_level;
+/*extern T_UBYTE rub_led_level;*/
 
 /* WORDS */
 
 
 /* LONGS and STRUCTURES */
-extern E_WINDOWLIFTER_MOVEMENTLIST re_move;
-extern E_WINDOWLIFTER_BUTTONLIST re_button_pressed;
+extern E_WINDOWLIFTER_CURRENTSTATE re_currentstate;
+/*extern E_WINDOWLIFTER_INPUTSIGNAL re_inputsignal;*/
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -70,6 +70,7 @@ extern E_WINDOWLIFTER_BUTTONLIST re_button_pressed;
 /* ---------------------------------------- */
 
 /* Functions prototypes */
+extern void WindowLifter_CheckLimits(void);
 extern void WindowLifter_StopMovement(void);
 extern void WindowLifter_Move1LevelUp(void);
 extern void WindowLifter_Move1LevelDown(void);

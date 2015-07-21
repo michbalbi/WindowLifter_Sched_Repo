@@ -5,7 +5,7 @@
 /*============================================================================*
 * C Source:         %WindowLifter_PeriodicTasks.c%
 * Instance:         1
-* %version:         1 %
+* %version:         1.1 %
 * %created_by:      Michele Balbi %
 * %date_created:    July 10 2015 %
 *=============================================================================*/
@@ -21,6 +21,9 @@
 /*----------------------------------------------------------------------------*/
 /*  1.0      | 10/07/2015  |                               | Michele Balbi    */
 /* 	First draft of file. Moving the functions from the main.c module.         */
+/*----------------------------------------------------------------------------*/
+/*  1.1      | 20/07/2015  |                               | Michele Balbi    */
+/* 	Added Polling function to detect pressed buttons.                         */
 /*============================================================================*/
 
 /* Includes */
@@ -28,7 +31,6 @@
 #include "MPC5606B.h"
 #include "conti_typedefs.h"
 #include "MPC5606B_GPIO_lib.h"
-#include "MPC5606B_PIT_lib.h"
 #include "WindowLifter_PeriodicTasks.h"
 #include "WindowLifter.h"
 
@@ -66,7 +68,11 @@
 /*======================================================*/ 
 
 /* Private defines */
-
+#define ZERO 				0U
+#define TEN_MS				8U
+#define FIVE_HUNDRED_MS 	400U
+#define FOUR_HUNDRED_MS		10U
+#define FIVE_S				1000U
 
 /* Private functions prototypes */
 /* ---------------------------- */
@@ -86,27 +92,57 @@
 /* Exported functions */
 /* ------------------ */
 /*****************************************************************
- *  Name                 :	WindowLifter_TimersInit
- *  Description          :	Timer Iinitialization.
+ *  Name                 :	WindowLifter_Task_Polling
+ *  Description          :	
  *  Parameters           :	void
  *  Return               :	void
- *  Critical/explanation :  Initializes timers, loads time values
- 							and enables interrupts for timers.
+ *  Critical/explanation :  
  ******************************************************************/
- void WindowLifter_TimersInit(void){
-
-	/* Timer init, loading times values, enable Timer INTs */
-    TIMER_INIT();
-    TIMER_LOAD_VALUE_MS(10,0);
-    TIMER_LOAD_VALUE_MS(500,1);
-    TIMER_LOAD_VALUE_MS(400,4);
-    TIMER_LOAD_VALUE_MS(5000,5);
-    TIMER_ENABLE_INT(0);		
-    TIMER_ENABLE_INT(1);
-    TIMER_ENABLE_INT(4);
-    TIMER_ENABLE_INT(5);
- }
+ void WindowLifter_Task_Polling(void){
  
+ 	static T_ULONG lul_up_counter=ZERO, lul_down_counter=ZERO, lul_pinch_counter=ZERO;
+  	
+ 	if(INPUT_STATE(ANTI_PINCH_BUTTON)==PRESSED){
+ 		lul_pinch_counter++;
+ 		
+ 		if(lul_pinch_counter>=TEN_MS && (re_currentstate == AUTO_UP_STATE || re_currentstate == MANUAL_UP_STATE)){
+ 			re_currentstate = ANTI_PINCH_STATE;
+ 		}
+ 	}else{
+ 		lul_pinch_counter=0;
+ 	}
+ 	
+ 	if(INPUT_STATE(UP_BUTTON)==PRESSED && re_currentstate!=ANTI_PINCH_STATE && re_currentstate!=BLOCKED_STATE){
+ 		lul_up_counter++;
+ 		
+ 		if(lul_up_counter>=TEN_MS && re_currentstate == WAIT_STATE){
+ 			re_currentstate = AUTO_UP_STATE;
+ 		}
+ 		
+ 		if(lul_up_counter>=FIVE_HUNDRED_MS){
+ 			re_currentstate = MANUAL_UP_STATE;
+ 		}
+ 	}else{
+ 		lul_up_counter=ZERO;
+ 	}
+ 	
+ 	if(INPUT_STATE(DOWN_BUTTON)==PRESSED && re_currentstate!=BLOCKED_STATE){
+ 		lul_down_counter++;
+ 		
+ 		if(lul_down_counter>=TEN_MS && re_currentstate == WAIT_STATE){
+ 			re_currentstate = AUTO_DOWN_STATE;
+ 		}
+ 		
+ 		if(lul_down_counter>=FIVE_HUNDRED_MS){
+ 			re_currentstate = MANUAL_DOWN_STATE;
+ 		}
+ 	}else{
+ 		lul_down_counter=ZERO;
+ 	} 	
+ 	
+ 	WindowLifter_CheckLimits();
+ }
+
 /*****************************************************************
  *  Name                 :	WindowLifter_Task_10MS
  *  Description          :	Timer Interrupt handler for the 10ms.
@@ -119,24 +155,7 @@
  							MANUAL modes.
  ******************************************************************/
  void WindowLifter_Task_10MS(void){
- 	TIMER_STOP(0); /* Disable 10ms automatic recount. */
- 	if(INPUT_STATE(DOWN_BUTTON)==PRESSED && re_button_pressed==BUTTON_DOWN &&  rub_led_level>=LED_LEVEL_MIN){
- 		re_move = AUTO_DOWN;
-		TIMER_STOP(4);
-		TIMER_START(4);
- 	} 	
- 	
- 	if(INPUT_STATE(UP_BUTTON)==PRESSED && re_button_pressed==BUTTON_UP && rub_led_level<LED_LEVEL_MAX){
- 		re_move = AUTO_UP;
-		TIMER_STOP(4);
-		TIMER_START(4);
- 	}
- 	
- 	if(INPUT_STATE(PINCH_SIGNAL)==ACTIVE_STATE && (re_move==AUTO_UP || re_move==MANUAL_UP)){
-		re_move=PINCH;
-	} 
- 	
- 	TIMER_CLEAR_INT_FLAG(0);
+ 
  }
  
  /*****************************************************************
@@ -148,17 +167,7 @@
  							MANUAL modes are activated.
  ******************************************************************/
  void WindowLifter_Task_500MS(void){
- 	TIMER_STOP(1); /* Disable 500ms automatic recount. */
- 	if(INPUT_STATE(DOWN_BUTTON)==PRESSED && re_button_pressed==BUTTON_DOWN && rub_led_level>=LED_LEVEL_MIN){
- 		re_move = MANUAL_DOWN;
- 	} 	
- 	
- 	if(INPUT_STATE(UP_BUTTON)==PRESSED && re_button_pressed==BUTTON_UP && rub_led_level<LED_LEVEL_MAX){
- 		re_move = MANUAL_UP;
- 	} 
- 	
- 	re_button_pressed = NONE;
- 	TIMER_CLEAR_INT_FLAG(1);
+
  }
  
  /*****************************************************************
@@ -167,7 +176,7 @@
  							count between LEDs' change of state.
  *  Parameters           :	void
  *  Return               :	void
- *  Critical/explanation :  Checks movement state through re_move,
+ *  Critical/explanation :  Checks movement state through re_currentstate,
  							if button is pressed (in case of manual
  							modes) and calls routines to turn ON/OFF
  							the next LED. Also calls the routine to
@@ -175,44 +184,21 @@
  ******************************************************************/
  void WindowLifter_Task_400MS(void){
  	
- 	if(re_move==PINCH){						
-		if(rub_led_level>=LED_LEVEL_MIN){  /* Any LEDs still ON?      */
-			WindowLifter_TurnOFFLED();	   /* Yes. Turn OFF next LED. */
-		}else{							   
-			WindowLifter_StopMovement();   /* No. Stop movement and   */
-			re_move=PINCH;				   /* start 5s blocking count.*/
-			TIMER_STOP(5);
-			TIMER_START(5); 			
-		}
- 	}
+ 	static T_ULONG lul_counter=0;
  
- 	/* Decisions for UP movements. */
- 	if((INPUT_STATE(UP_BUTTON)==PRESSED && re_move==MANUAL_UP) || re_move==AUTO_UP){
- 		if(rub_led_level<LED_LEVEL_MAX){   /* Check LED limits */
- 			WindowLifter_TurnONLED();
- 		}else{
- 			WindowLifter_StopMovement();   /* If limit was reached, stop movement.	 */
- 		}
- 	}else{
- 		if(re_move==MANUAL_UP){				/* If manual UP is active but its button */
- 			WindowLifter_StopMovement();    /* isn't pressed anymore, stop movement. */
- 		}
- 	}
+ 	lul_counter++;
  	
- 	/* Decisions for DOWN movements. */
- 	if((INPUT_STATE(DOWN_BUTTON)==PRESSED && re_move==MANUAL_DOWN) || re_move==AUTO_DOWN){
-		if(rub_led_level>=LED_LEVEL_MIN){
-			WindowLifter_TurnOFFLED();		/* If limit was reached, stop movement.	 */
-		}else{
- 			WindowLifter_StopMovement();
- 		}
- 	}else{
- 		if(re_move==MANUAL_DOWN){			/* If manual DOWN is active but its button */
- 			WindowLifter_StopMovement();    /* isn't pressed anymore, stop movement. */
- 		}
- 	}
- 	
- 	TIMER_CLEAR_INT_FLAG(4);
+ 	if(lul_counter==FOUR_HUNDRED_MS){
+ 		lul_counter=ZERO;
+ 		
+ 		if(re_currentstate==AUTO_UP_STATE || re_currentstate==MANUAL_UP_STATE){
+ 			WindowLifter_Move1LevelUp();
+	 	}
+	 	
+	 	if(re_currentstate==AUTO_DOWN_STATE || re_currentstate==MANUAL_DOWN_STATE || re_currentstate==ANTI_PINCH_STATE){
+	 		WindowLifter_Move1LevelDown();
+	 	}
+ 	} 	
  }
  
  /**************************************************************
@@ -222,12 +208,18 @@
  *  Parameters           :	void
  *  Return               :	void
  *  Critical/explanation :  Disables the 5s timer and resets
- 							re_move so signals can be read again.
+ 							re_currentstate so signals can be read again.
  **************************************************************/
  void WindowLifter_Task_5S(void){
  	
- 	TIMER_STOP(5);
- 	re_move=DISABLED;
+ 	static T_ULONG lul_counter=0;
  	
- 	TIMER_CLEAR_INT_FLAG(5);
+ 	if(re_currentstate==BLOCKED_STATE){
+ 		lul_counter++; 		
+ 	}
+ 	
+ 	if(lul_counter==FIVE_S){
+ 		lul_counter=ZERO;
+ 		re_currentstate=WAIT_STATE;
+ 	}
  }

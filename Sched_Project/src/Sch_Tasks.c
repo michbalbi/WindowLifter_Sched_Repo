@@ -26,7 +26,7 @@
 /* -------- */
 #include "conti_typedefs.h"
 #include "Sch_Tasks.h"
-#include "MPC5606B_GPIO_lib.h"
+/*#include "MPC5606B_GPIO_lib.h"*/
 #include "WindowLifter_PeriodicTasks.h"
 
 /* Functions macros, constants, types and datas         */
@@ -94,49 +94,20 @@
  **************************************************************/
 
 void Sch_Task_1p25MS(void){
-
-	LED_TOGGLE(LED4);
+	
+	WindowLifter_Task_Polling();	
 }
 
 void Sch_Task_5MS(void){
-	
-	static T_UBYTE lub_counter=0;
-	
-	lub_counter++;
-	
-	if(lub_counter==100){
-		LED_TOGGLE(LED1);	
-		lub_counter=0;
-	}
+
+	WindowLifter_Task_5S();	
 }
 
 void Sch_Task_10MS(void){
 
-	LED_TOGGLE(LED2);
 }
 
 void Sch_Task_40MS(void){
-
-	static T_UBYTE lub_counter=0;
 	
-	lub_counter++;
-	
-	if(lub_counter==10){
-		LED_TOGGLE(LED3);
-		lub_counter=0;
-	}
-	
+	WindowLifter_Task_400MS();
 }
-
-/*void Sch_Task_25MS(void){
-	LED_TOGGLE(LED4);
-}
-
-void Sch_Task_50MS(void){
-
-	
-}
-
-void Sch_Task_100MS(void){
-
-}*/

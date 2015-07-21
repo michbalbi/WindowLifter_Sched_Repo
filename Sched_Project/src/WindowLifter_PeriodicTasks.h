@@ -54,14 +54,13 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTES */
-/*extern T_UBYTE rub_led_level;*/
+
 
 /* WORDS */
 
 
 /* LONGS and STRUCTURES */
-/*extern MovementList re_move;
-extern ButtonList re_button_pressed;*/
+
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -71,7 +70,7 @@ extern ButtonList re_button_pressed;*/
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void WindowLifter_TimersInit(void);
+extern void WindowLifter_Task_Polling(void);
 extern void WindowLifter_Task_10MS(void);
 extern void WindowLifter_Task_400MS(void);
 extern void WindowLifter_Task_500MS(void);
