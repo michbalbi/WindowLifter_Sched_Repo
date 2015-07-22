@@ -5,7 +5,7 @@
 /*============================================================================*
 * C Source:         %WindowLifter_PeriodicTasks.c%
 * Instance:         1
-* %version:         1.1 %
+* %version:         1.2 %
 * %created_by:      Michele Balbi %
 * %date_created:    July 10 2015 %
 *=============================================================================*/
@@ -24,6 +24,9 @@
 /*----------------------------------------------------------------------------*/
 /*  1.1      | 20/07/2015  |                               | Michele Balbi    */
 /* 	Added Polling function to detect pressed buttons.                         */
+/*----------------------------------------------------------------------------*/
+/*  1.2      | 22/07/2015  |                               | Michele Balbi    */
+/* 	Modified Polling function to avoid wrong state changes.                   */
 /*============================================================================*/
 
 /* Includes */
@@ -100,74 +103,59 @@
  ******************************************************************/
  void WindowLifter_Task_Polling(void){
  
- 	static T_ULONG lul_up_counter=ZERO, lul_down_counter=ZERO, lul_pinch_counter=ZERO;
+ 	static T_UWORD luw_up_counter=ZERO, luw_down_counter=ZERO, luw_pinch_counter=ZERO;
   	
  	if(INPUT_STATE(ANTI_PINCH_BUTTON)==PRESSED){
- 		lul_pinch_counter++;
+ 		luw_pinch_counter++;
  		
- 		if(lul_pinch_counter>=TEN_MS && (re_currentstate == AUTO_UP_STATE || re_currentstate == MANUAL_UP_STATE)){
+ 		if(luw_pinch_counter>=TEN_MS && (re_currentstate == AUTO_UP_STATE || re_currentstate == MANUAL_UP_STATE)){
  			re_currentstate = ANTI_PINCH_STATE;
  		}
  	}else{
- 		lul_pinch_counter=0;
+ 		luw_pinch_counter=0;
  	}
  	
- 	if(INPUT_STATE(UP_BUTTON)==PRESSED && re_currentstate!=ANTI_PINCH_STATE && re_currentstate!=BLOCKED_STATE){
- 		lul_up_counter++;
+ 	if(INPUT_STATE(UP_BUTTON)==PRESSED && re_currentstate!=ANTI_PINCH_STATE && re_currentstate!=BLOCKED_STATE && luw_down_counter==0){
+ 		luw_up_counter++;
  		
- 		if(lul_up_counter>=TEN_MS && re_currentstate == WAIT_STATE){
+ 		if(luw_up_counter>=TEN_MS && re_currentstate == WAIT_STATE){
  			re_currentstate = AUTO_UP_STATE;
  		}
  		
- 		if(lul_up_counter>=FIVE_HUNDRED_MS){
+ 		/*if(luw_up_counter>=TEN_MS && (re_currentstate == AUTO_DOWN_STATE || re_currentstate == MANUAL_DOWN_STATE)){
+ 			WindowLifter_StopMovement();
+ 			luw_up_counter=ZERO;
+ 		}*/
+ 		
+ 		if(luw_up_counter>=FIVE_HUNDRED_MS && re_currentstate == AUTO_UP_STATE){
  			re_currentstate = MANUAL_UP_STATE;
  		}
  	}else{
- 		lul_up_counter=ZERO;
+ 		luw_up_counter=ZERO;
  	}
  	
- 	if(INPUT_STATE(DOWN_BUTTON)==PRESSED && re_currentstate!=BLOCKED_STATE){
- 		lul_down_counter++;
+ 	if(INPUT_STATE(DOWN_BUTTON)==PRESSED && re_currentstate!=BLOCKED_STATE && luw_up_counter==0){
+ 		luw_down_counter++;
  		
- 		if(lul_down_counter>=TEN_MS && re_currentstate == WAIT_STATE){
+ 		if(luw_down_counter>=TEN_MS && re_currentstate == WAIT_STATE){
  			re_currentstate = AUTO_DOWN_STATE;
  		}
  		
- 		if(lul_down_counter>=FIVE_HUNDRED_MS){
+ 		/*if(luw_down_counter>=TEN_MS && (re_currentstate == AUTO_UP_STATE || re_currentstate == MANUAL_UP_STATE)){
+ 			WindowLifter_StopMovement();
+ 			luw_down_counter=ZERO;
+ 		}*/
+ 		
+ 		if(luw_down_counter>=FIVE_HUNDRED_MS && re_currentstate == AUTO_DOWN_STATE){
  			re_currentstate = MANUAL_DOWN_STATE;
  		}
  	}else{
- 		lul_down_counter=ZERO;
+ 		luw_down_counter=ZERO;
  	} 	
  	
- 	WindowLifter_CheckLimits();
- }
-
-/*****************************************************************
- *  Name                 :	WindowLifter_Task_10MS
- *  Description          :	Timer Interrupt handler for the 10ms.
- *  Parameters           :	void
- *  Return               :	void
- *  Critical/explanation :  Check if input signals are still active
- 							after 10ms, to filter glitches.
- 							If the signals are valid, set AUTO modes
- 							and start timersfor 500ms to check for 
- 							MANUAL modes.
- ******************************************************************/
- void WindowLifter_Task_10MS(void){
- 
- }
- 
- /*****************************************************************
- *  Name                 :	WindowLifter_Task_500MS
- *  Description          :	Timer Interrupt handler for the 500ms.
- *  Parameters           :	void
- *  Return               :	void
- *  Critical/explanation :  If buttons are still pressed after 500ms
- 							MANUAL modes are activated.
- ******************************************************************/
- void WindowLifter_Task_500MS(void){
-
+ 	if(re_currentstate!=WAIT_STATE){
+ 		WindowLifter_CheckLimits();
+ 	}
  }
  
  /*****************************************************************
@@ -184,12 +172,12 @@
  ******************************************************************/
  void WindowLifter_Task_400MS(void){
  	
- 	static T_ULONG lul_counter=0;
+ 	static T_UWORD luw_counter=0;
  
- 	lul_counter++;
+ 	luw_counter++;
  	
- 	if(lul_counter==FOUR_HUNDRED_MS){
- 		lul_counter=ZERO;
+ 	if(luw_counter==FOUR_HUNDRED_MS){
+ 		luw_counter=ZERO;
  		
  		if(re_currentstate==AUTO_UP_STATE || re_currentstate==MANUAL_UP_STATE){
  			WindowLifter_Move1LevelUp();
@@ -212,14 +200,14 @@
  **************************************************************/
  void WindowLifter_Task_5S(void){
  	
- 	static T_ULONG lul_counter=0;
+ 	static T_UWORD luw_counter=0;
  	
  	if(re_currentstate==BLOCKED_STATE){
- 		lul_counter++; 		
+ 		luw_counter++; 		
  	}
  	
- 	if(lul_counter==FIVE_S){
- 		lul_counter=ZERO;
+ 	if(luw_counter==FIVE_S){
+ 		luw_counter=ZERO;
  		re_currentstate=WAIT_STATE;
  	}
  }

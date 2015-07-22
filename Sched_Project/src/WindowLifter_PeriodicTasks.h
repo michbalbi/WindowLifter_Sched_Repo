@@ -71,9 +71,9 @@
 
 /* Functions prototypes */
 extern void WindowLifter_Task_Polling(void);
-extern void WindowLifter_Task_10MS(void);
+/*extern void WindowLifter_Task_10MS(void);*/
 extern void WindowLifter_Task_400MS(void);
-extern void WindowLifter_Task_500MS(void);
+/*extern void WindowLifter_Task_500MS(void);*/
 extern void WindowLifter_Task_5S(void);
 
 

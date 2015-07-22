@@ -20,8 +20,8 @@
 /* Enum to hold machine's current state */
 typedef enum { 			
 	WAIT_STATE,
-	VALIDATION_STATE,
-	MODE_DECISION_STATE,
+	/*VALIDATION_STATE,*/
+	/*MODE_DECISION_STATE,*/
 	AUTO_UP_STATE,
 	AUTO_DOWN_STATE,
 	MANUAL_UP_STATE,

@@ -67,7 +67,7 @@ E_WINDOWLIFTER_CURRENTSTATE re_currentstate = WAIT_STATE;
 
 /* Private functions prototypes */
 /* ---------------------------- */
-
+void WindowLifter_StopMovement(void);
 
 
 /* Exported functions prototypes */
@@ -79,7 +79,19 @@ E_WINDOWLIFTER_CURRENTSTATE re_currentstate = WAIT_STATE;
 
 /* Private functions */
 /* ----------------- */
-
+/*****************************************************************
+*  Name                 :	WindowLifter_StopMovement
+*  Description          :	Routine to stop the LED switching.
+*  Parameters           :	void
+*  Return               :	void
+*  Critical/explanation :   Change re_currentstate to stop movement.
+							Turn OFF LED indicators.
+******************************************************************/
+void WindowLifter_StopMovement(void){
+	OUTPUT_LOW(UP_LED);
+	OUTPUT_LOW(DOWN_LED);
+	re_currentstate=WAIT_STATE;
+}
  
 /* Exported functions */
 /* ------------------ */
@@ -113,21 +125,8 @@ void WindowLifter_CheckLimits(void){
  		WindowLifter_StopMovement();
  		re_currentstate=BLOCKED_STATE;
  	}
-}
+ }
 
-/*****************************************************************
-*  Name                 :	WindowLifter_StopMovement
-*  Description          :	Routine to stop the LED switching.
-*  Parameters           :	void
-*  Return               :	void
-*  Critical/explanation :   Change re_currentstate to stop movement.
-							Turn OFF LED indicators.
-******************************************************************/
-void WindowLifter_StopMovement(void){
-	OUTPUT_LOW(UP_LED);
-	OUTPUT_LOW(DOWN_LED);
-	re_currentstate=WAIT_STATE;
-}
 
  /*****************************************************************
  *  Name                 :	WindowLifter_Move1LevelUp

@@ -26,7 +26,6 @@
 /* -------- */
 #include "conti_typedefs.h"
 #include "Sch_Tasks.h"
-/*#include "MPC5606B_GPIO_lib.h"*/
 #include "WindowLifter_PeriodicTasks.h"
 
 /* Functions macros, constants, types and datas         */
