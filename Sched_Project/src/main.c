@@ -29,10 +29,8 @@
 #include "MPC5606B_GPIO_lib.h"
 #include "MPC5606B_ClkInit.h"
 #include "MPC5606B_INTERRUPTS_lib.h"
-/*#include "MPC5606B_PIT_lib.h"*/
 #include "MemAlloc_Cfg.h"
 #include "Sch.h"
-/*#include "WindowLifter.h"*/
 
 /* Functions macros, constants, types and datas         */
 /* ---------------------------------------------------- */
@@ -103,7 +101,7 @@
  **************************************************************/
 int main(void) {
 	
-	MemAllocInit(&MemAllocConfig);
+	MemAllocInit(&MemAllocConfig);	/* Initialization of Memory Allocation library */
 	
 	initModesAndClock();    /* Initialize mode entries and system clock */
 	disableWatchdog();      /* Disable watchdog */

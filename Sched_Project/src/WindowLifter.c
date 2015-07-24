@@ -56,7 +56,6 @@ T_UBYTE rub_led_level = LED_LEVEL_MAX;
 
 /* LONG and STRUCTURE RAM variables */
 E_WINDOWLIFTER_CURRENTSTATE re_currentstate = WAIT_STATE;
-/*E_WINDOWLIFTER_INPUTSIGNAL re_inputsignal = NO_SIGNAL;*/
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -84,7 +83,7 @@ void WindowLifter_StopMovement(void);
 *  Description          :	Routine to stop the LED switching.
 *  Parameters           :	void
 *  Return               :	void
-*  Critical/explanation :   Change re_currentstate to stop movement.
+*  Critical/explanation :   Change state to WAIT so movement is stopped.
 							Turn OFF LED indicators.
 ******************************************************************/
 void WindowLifter_StopMovement(void){
@@ -100,27 +99,37 @@ void WindowLifter_StopMovement(void){
 *  Description          :	Routine to stop the LED switching.
 *  Parameters           :	void
 *  Return               :	void
-*  Critical/explanation :   Change re_currentstate to stop movement.
-							Turn OFF LED indicators.
+*  Critical/explanation :   Checks if the movement shall be stopped
+							because of LED range limits, the release
+							of a button while in MANUAL movement state 
+							or a valid Anti Pinch signal.
+							
+							Calls StopMovement routine to turn off
+							indicators.							
 ******************************************************************/
 void WindowLifter_CheckLimits(void){
 	
+	/* Stop if UP movement is active and highest LED is reached */
 	if((re_currentstate==AUTO_UP_STATE || re_currentstate==MANUAL_UP_STATE) && rub_led_level==LED_LEVEL_MAX){
  		WindowLifter_StopMovement();
  	}
  	
+ 	/* Stop if DOWN movement is active and lowest LED is reached */
  	if((re_currentstate==AUTO_DOWN_STATE || re_currentstate==MANUAL_DOWN_STATE) && rub_led_level<LED_LEVEL_MIN){
  		WindowLifter_StopMovement();
  	}
  	
+ 	/* Stop if MANUAL UP state is active and the corresponding button is released */
  	if((re_currentstate==MANUAL_UP_STATE) && INPUT_STATE(UP_BUTTON)!=PRESSED){
  		WindowLifter_StopMovement();
  	}
 	
+	/* Stop if MANUAL DOWN state is active and the corresponding button is released */
 	if((re_currentstate==MANUAL_DOWN_STATE) && INPUT_STATE(DOWN_BUTTON)!=PRESSED){
  		WindowLifter_StopMovement();
  	}
  	
+ 	/* Stop if ANTI PINCH state is active and lowest LED is reached. Set to BLOCKED state */
  	if(re_currentstate==ANTI_PINCH_STATE && rub_led_level<LED_LEVEL_MIN){
  		WindowLifter_StopMovement();
  		re_currentstate=BLOCKED_STATE;
@@ -133,8 +142,7 @@ void WindowLifter_CheckLimits(void){
  *  Description          :	Routine to turn ON next LED.
  *  Parameters           :	void
  *  Return               :	void
- *  Critical/explanation :  Turn ON next LED and keep OFF the UP
- 							movement LED indicator.
+ *  Critical/explanation :  Turn ON next LED and sets LED indicators.
  ******************************************************************/
  void WindowLifter_Move1LevelUp(void){
  	OUTPUT_HIGH(UP_LED);
@@ -148,8 +156,7 @@ void WindowLifter_CheckLimits(void){
  *  Description          :	Routine to turn OFF next LED.
  *  Parameters           :	void
  *  Return               :	void
- *  Critical/explanation :  Turn OFF next LED and keep ON the DOWN
- 							movement LED indicator.
+ *  Critical/explanation :  Turn OFF next LED and sets LED indicators.
  ******************************************************************/
  void WindowLifter_Move1LevelDown(void){
 	OUTPUT_LOW(UP_LED);
