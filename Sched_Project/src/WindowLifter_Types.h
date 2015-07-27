@@ -20,8 +20,6 @@
 /* Enum to hold machine's current state */
 typedef enum { 			
 	WAIT_STATE,
-	/*VALIDATION_STATE,*/
-	/*MODE_DECISION_STATE,*/
 	AUTO_UP_STATE,
 	AUTO_DOWN_STATE,
 	MANUAL_UP_STATE,
@@ -31,12 +29,6 @@ typedef enum {
 }E_WINDOWLIFTER_CURRENTSTATE;
 
 /* enum to hold a value depending on the pressed button*/
-/*typedef enum {			
-	NO_SIGNAL,
-	BUTTON_UP_SIGNAL,
-	BUTTON_DOWN_SIGNAL,
-	ANTI_PINCH_SIGNAL
-}E_WINDOWLIFTER_INPUTSIGNAL;*/
 
 
 /* BYTES */

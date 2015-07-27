@@ -71,7 +71,7 @@
 /*======================================================*/ 
 
 /* Private defines */
-#define ZERO 				0U
+#define ZERO_COUNTS 		0U
 #define TEN_MS				8U
 #define FIVE_HUNDRED_MS 	400U
 #define FOUR_HUNDRED_MS		10U
@@ -106,7 +106,7 @@
  void WindowLifter_Task_Polling(void){
  
  	/* Counters for UP/DOWN/PINCH signals */ 
- 	static T_UWORD luw_up_counter=ZERO, luw_down_counter=ZERO, luw_pinch_counter=ZERO;
+ 	static T_UWORD luw_up_counter=ZERO_COUNTS, luw_down_counter=ZERO_COUNTS, luw_pinch_counter=ZERO_COUNTS;
   	
   	/* Count the time the Anti Pinch signal is present to filter glitches. */
  	if(INPUT_STATE(ANTI_PINCH_BUTTON)==PRESSED){
@@ -118,11 +118,11 @@
  		}
  	}else{
  		/* Reset Anti Pinch signal counter. */
- 		luw_pinch_counter=0;
+ 		luw_pinch_counter=ZERO_COUNTS;
  	}
  	
  	/* Count the time the UP signal is present to filter glitches, only if the system isn't in BLOCKED/ANTI PINCH state. */
- 	if(INPUT_STATE(UP_BUTTON)==PRESSED && re_currentstate!=ANTI_PINCH_STATE && re_currentstate!=BLOCKED_STATE && luw_down_counter==0){
+ 	if(INPUT_STATE(UP_BUTTON)==PRESSED && re_currentstate!=ANTI_PINCH_STATE && re_currentstate!=BLOCKED_STATE && luw_down_counter==ZERO_COUNTS){
  		luw_up_counter++;
  		
  		/* If 10ms pass, only enter AUTO UP state if the current state is WAIT */ 		
@@ -136,11 +136,11 @@
  		}
  	}else{
  		/* Reset UP button signal counter every time it is detected as released. */
- 		luw_up_counter=ZERO;
+ 		luw_up_counter=ZERO_COUNTS;
  	}
  	
  	/* Count the time the DOWN signal is present to filter glitches, only if the system isn't in BLOCKED/ANTI PINCH state. */
- 	if(INPUT_STATE(DOWN_BUTTON)==PRESSED && re_currentstate!=BLOCKED_STATE && luw_up_counter==0){
+ 	if(INPUT_STATE(DOWN_BUTTON)==PRESSED && re_currentstate!=BLOCKED_STATE && luw_up_counter==ZERO_COUNTS){
  		luw_down_counter++;
  		
  		/* If 10ms pass, only enter AUTO DOWN state if the current state is WAIT */
@@ -154,7 +154,7 @@
  		}
  	}else{
  		/* Reset DOWN button signal counter every time it is detected as released */
- 		luw_down_counter=ZERO;
+ 		luw_down_counter=ZERO_COUNTS;
  	} 	
  	
  	/* Check if the movement should continue while the system isn't in WAIT state. */
@@ -179,13 +179,13 @@
  void WindowLifter_Task_400MS(void){
  	
  	/* Counter to check if 400ms periods occur. */
- 	static T_UWORD luw_counter=0;
+ 	static T_UWORD luw_counter=ZERO_COUNTS;
  
  	luw_counter++;
  	
  	/* Each time the 400ms periods are valid, reset the counter and check the active states to do the appropriate movement. */
  	if(luw_counter==FOUR_HUNDRED_MS){
- 		luw_counter=ZERO;
+ 		luw_counter=ZERO_COUNTS;
  		
  		/* Turn on next LED (window up) if any UP state is active. */
  		if(re_currentstate==AUTO_UP_STATE || re_currentstate==MANUAL_UP_STATE){
@@ -214,7 +214,7 @@
  void WindowLifter_Task_5S(void){
  	
  	/* Counter used to validate the 5 seconds period. */
- 	static T_UWORD luw_counter=ZERO;
+ 	static T_UWORD luw_counter=ZERO_COUNTS;
  	
  	/* The counter should only count while in BLOCKED state. */
  	if(re_currentstate==BLOCKED_STATE){
@@ -223,7 +223,7 @@
  	
  	/* Once the 5 seconds pass, unlock the system. */
  	if(luw_counter==FIVE_S){
- 		luw_counter=ZERO;
+ 		luw_counter=ZERO_COUNTS;
  		re_currentstate=WAIT_STATE;
  	}
  }
