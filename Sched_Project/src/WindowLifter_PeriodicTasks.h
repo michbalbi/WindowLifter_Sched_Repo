@@ -22,8 +22,8 @@
 /* First Draft.																  */
 /*============================================================================*/
 
-#ifndef _TIMER_MODULE_H_                         /* To avoid double inclusion */
-#define _TIMER_MODULE_H_
+#ifndef WINDOWLIFTER_PERIODICTASKS_H                         /* To avoid double inclusion */
+#define WINDOWLIFTER_PERIODICTASKS_H
 
 /* Includes */
 /* -------- */
@@ -71,9 +71,7 @@
 
 /* Functions prototypes */
 extern void WindowLifter_Task_Polling(void);
-/*extern void WindowLifter_Task_10MS(void);*/
 extern void WindowLifter_Task_400MS(void);
-/*extern void WindowLifter_Task_500MS(void);*/
 extern void WindowLifter_Task_5S(void);
 
 

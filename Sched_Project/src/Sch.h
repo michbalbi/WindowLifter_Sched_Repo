@@ -22,8 +22,8 @@
 /* First Draft 																  */
 /*============================================================================*/
 
-#ifndef _SCH_H_                               /* To avoid double inclusion */
-#define _SCH_H_
+#ifndef SCH_H                               /* To avoid double inclusion */
+#define SCH_H
 
 /* Includes */
 /* -------- */
@@ -70,7 +70,7 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
- extern void Sch_Init(const S_SCH_CONFIG *lps_SchConfig);
+ extern void Sch_Init(const S_SCH_CONFIG *lps_SchConfig_Init);
  extern void Sch_Stop(void);
  extern void Sch_OSTick(void);
  extern void Sch_Start(void);

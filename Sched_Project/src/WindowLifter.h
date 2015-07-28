@@ -5,8 +5,8 @@
 /*============================================================================*
 * C Include:        %WindowLifter.h%
 * Instance:         1
-* %version:         1 %
-* %created_by:      Michele Balbi %
+* %version:         1.2 %
+* %created_by:      Luis Medina  %
 * %date_created:    July 17 2015 %
 *=============================================================================*/
 /* DESCRIPTION : Header file for the Window Lifter's main functionality.      */
@@ -18,12 +18,18 @@
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 17/07/2015  |                               | Michele Balbi    */
+/*  1.0      | 17/07/2015  |                               | Luis Medina      */
 /* First Draft 																  */
+/*----------------------------------------------------------------------------*/
+/*  1.1      | 20/07/2015  |                               | Michele Balbi    */
+/* Added prototype for exported function CheckLimits. Removed StopMovement.   */
+/*----------------------------------------------------------------------------*/
+/*  1.2      | 27/07/2015  |                               | Luis Medina      */
+/* Cleaner code. Deleted commented code due to MISRA checks.				  */
 /*============================================================================*/
 
-#ifndef _SCH_H_                               /* To avoid double inclusion */
-#define _SCH_H_
+#ifndef WINDOWLIFTER_H                               /* To avoid double inclusion */
+#define WINDOWLIFTER_H
 
 /* Includes */
 /* -------- */
@@ -53,14 +59,12 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTES */
-/*extern T_UBYTE rub_led_level;*/
 
 /* WORDS */
 
 
 /* LONGS and STRUCTURES */
 extern E_WINDOWLIFTER_CURRENTSTATE re_currentstate;
-/*extern E_WINDOWLIFTER_INPUTSIGNAL re_inputsignal;*/
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -71,7 +75,6 @@ extern E_WINDOWLIFTER_CURRENTSTATE re_currentstate;
 
 /* Functions prototypes */
 extern void WindowLifter_CheckLimits(void);
-/*extern void WindowLifter_StopMovement(void);*/
 extern void WindowLifter_Move1LevelUp(void);
 extern void WindowLifter_Move1LevelDown(void);
  

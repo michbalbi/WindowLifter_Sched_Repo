@@ -28,8 +28,8 @@
 /* Added GPIO_Init() function prototype to export it.                         */
 /*============================================================================*/
 
-#ifndef _MPC5606B_GPIO_LIB_
-#define _MPC5606B_GPIO_LIB_
+#ifndef MPC5606B_GPIO_LIB
+#define MPC5606B_GPIO_LIB
 
 /* Includes */
 /* -------- */

@@ -1,5 +1,5 @@
-#ifndef _WINDOWLIFTER_TYPEDEF_                 /* To avoid double inclusion */
-#define _WINDOWLIFTER_TYPEDEF_
+#ifndef WINDOWLIFTER_TYPEDEF                 /* To avoid double inclusion */
+#define WINDOWLIFTER_TYPEDEF
 
 /* Defines for buttons and pinch signal pins, 				 */
 /* and pressed/active states. Correspondence w/ GPIO number. */

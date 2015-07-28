@@ -22,8 +22,8 @@
 /* First Draft of file.                                          			  */
 /*============================================================================*/
 
-#ifndef _MPC5606B_INTERRUPTS_LIB_
-#define _MPC5606B_INTERRUPTS_LIB_
+#ifndef MPC5606B_INTERRUPTS_LIB
+#define MPC5606B_INTERRUPTS_LIB
 
 #include "MPC5606B.h"
 

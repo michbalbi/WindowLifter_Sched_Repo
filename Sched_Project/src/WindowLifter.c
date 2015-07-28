@@ -5,8 +5,8 @@
 /*============================================================================*
 * C Source:         %WindowLifter.c%
 * Instance:         1
-* %version:         1 %
-* %created_by:      Michele Balbi %
+* %version:         1.2 %
+* %created_by:      Luis Medina %
 * %date_created:    July 17 2015 %
 *=============================================================================*/
 /* DESCRIPTION : C source code for the Window Lifter's main functionality.    */
@@ -18,8 +18,15 @@
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 17/07/2015  |                               | Michele Balbi    */
+/*  1.0      | 17/07/2015  |                               | Luis Medina      */
 /* 	First draft.                                                              */
+/*----------------------------------------------------------------------------*/
+/*  1.1      | 10/07/2015  |                               | Michele Balbi    */
+/* 	Implemented CheckLimits function.                                         */
+/*----------------------------------------------------------------------------*/
+/*  1.2      | 27/07/2015  |                               | Luis Medina      */
+/* 	StopMovement function is now static.                                      */
+/* 	Cleaner code and removed commented code due to MISRA checks.              */
 /*============================================================================*/
 
 /* Includes */
@@ -49,7 +56,7 @@
 /* Definition of RAM variables                          */
 /*======================================================*/ 
 /* BYTE RAM variables */
-T_UBYTE rub_led_level = LED_LEVEL_MAX;
+static T_UBYTE rub_led_level = LED_LEVEL_MAX;
 
 /* WORD RAM variables */
 
@@ -66,7 +73,7 @@ E_WINDOWLIFTER_CURRENTSTATE re_currentstate = WAIT_STATE;
 
 /* Private functions prototypes */
 /* ---------------------------- */
-void WindowLifter_StopMovement(void);
+static void WindowLifter_StopMovement(void);
 
 
 /* Exported functions prototypes */
@@ -86,7 +93,7 @@ void WindowLifter_StopMovement(void);
 *  Critical/explanation :   Change state to WAIT so movement is stopped.
 							Turn OFF LED indicators.
 ******************************************************************/
-void WindowLifter_StopMovement(void){
+static void WindowLifter_StopMovement(void){
 	OUTPUT_LOW(UP_LED);
 	OUTPUT_LOW(DOWN_LED);
 	re_currentstate=WAIT_STATE;

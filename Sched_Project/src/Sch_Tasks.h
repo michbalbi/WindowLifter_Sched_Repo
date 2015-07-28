@@ -22,8 +22,8 @@
 /* First Draft 																  */
 /*============================================================================*/
 
-#ifndef _SCH_TASKS_H_                            /* To avoid double inclusion */
-#define _SCH_TASKS_H_
+#ifndef SCH_TASKS_H                            /* To avoid double inclusion */
+#define SCH_TASKS_H
 
 /* Includes */
 /* -------- */

@@ -179,13 +179,13 @@
  void WindowLifter_Task_400MS(void){
  	
  	/* Counter to check if 400ms periods occur. */
- 	static T_UWORD luw_counter=ZERO_COUNTS;
+ 	static T_UWORD luw_counter_400ms=ZERO_COUNTS;
  
- 	luw_counter++;
+ 	luw_counter_400ms++;
  	
  	/* Each time the 400ms periods are valid, reset the counter and check the active states to do the appropriate movement. */
- 	if(luw_counter==FOUR_HUNDRED_MS){
- 		luw_counter=ZERO_COUNTS;
+ 	if(luw_counter_400ms==FOUR_HUNDRED_MS){
+ 		luw_counter_400ms=ZERO_COUNTS;
  		
  		/* Turn on next LED (window up) if any UP state is active. */
  		if(re_currentstate==AUTO_UP_STATE || re_currentstate==MANUAL_UP_STATE){
@@ -214,16 +214,16 @@
  void WindowLifter_Task_5S(void){
  	
  	/* Counter used to validate the 5 seconds period. */
- 	static T_UWORD luw_counter=ZERO_COUNTS;
+ 	static T_UWORD luw_counter_5s=ZERO_COUNTS;
  	
  	/* The counter should only count while in BLOCKED state. */
  	if(re_currentstate==BLOCKED_STATE){
- 		luw_counter++; 		
+ 		luw_counter_5s++; 		
  	}
  	
  	/* Once the 5 seconds pass, unlock the system. */
- 	if(luw_counter==FIVE_S){
- 		luw_counter=ZERO_COUNTS;
+ 	if(luw_counter_5s==FIVE_S){
+ 		luw_counter_5s=ZERO_COUNTS;
  		re_currentstate=WAIT_STATE;
  	}
  }
