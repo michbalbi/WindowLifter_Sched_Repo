@@ -117,13 +117,17 @@ int main(void) {
     Sch_Init(&cs_SchConfig);
     
     /* Interrupts installation and initialization */
-    INTC_InstallINTCInterruptHandler(Sch_OSTick, PIT0_Vector, PRIORITY13);
+    INTC_InstallINTCInterruptHandler(&Sch_OSTick, PIT0_Vector, PRIORITY13);
     INT_LOWER_CPR(PRIORITY0);
     INTC_InitINTCInterrupts(); 
     
     /* Scheduler start routine */
     Sch_Start(); 
 	
-	for (;;) { 	} /* Execution shall never reach this loop*/
+	for (;;) { 
+		; /* Execution shall never reach this loop*/	
+	}
+	
+	return 0;
 }
 

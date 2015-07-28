@@ -71,7 +71,7 @@ extern E_WINDOWLIFTER_CURRENTSTATE re_currentstate;
 
 /* Functions prototypes */
 extern void WindowLifter_CheckLimits(void);
-extern void WindowLifter_StopMovement(void);
+/*extern void WindowLifter_StopMovement(void);*/
 extern void WindowLifter_Move1LevelUp(void);
 extern void WindowLifter_Move1LevelDown(void);
  

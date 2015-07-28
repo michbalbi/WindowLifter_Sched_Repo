@@ -92,8 +92,8 @@
 #define	PRIORITY14	14
 #define	PRIORITY15	15
 
-#define INT_SW_VECTOR_MODE()			(INTC.MCR.R = 0x00000000)
-#define INT_LOWER_CPR(priority)			(INTC.CPR.R = priority)
+#define INT_SW_VECTOR_MODE()			(INTC.MCR.R = 0x00000000u)
+#define INT_LOWER_CPR(priority)			(INTC.CPR.R = (priority))
 #define EXTINT_ENABLE(int_num)			(SIU.IRER.B.IRE##int_num = 1)
 #define EXTINT_FALLING_EDGE(int_num)	(SIU.IFEER.B.IFEE##int_num = 1)
 #define EXTINT_RISING_EDGE(int_num)		(SIU.IFEER.B.IREE##int_num = 1)

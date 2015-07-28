@@ -29,7 +29,6 @@
 /* -------- */
 #include "conti_typedefs.h"
 #include "MPC5606B_INTERRUPTS_lib.h"
-/*#include "MPC5606B_GPIO_lib.h"*/
 #include "MPC5606B_PIT_lib.h"
 #include "Sch_Types.h"
 #include "Sch.h"
@@ -66,15 +65,6 @@
 const S_SCH_CONFIG *rps_SchConfig_ptr;
 
 S_SCH_TASK_CONTROL *ras_SchTaskControlBlock_ptr;
-
-/*S_SCH_TASK_CONTROL ras_SchTaskControlBlock[] = {
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-};*/
 
 S_SCH_CONTROL rs_SchControl = {
 	0,
@@ -119,7 +109,9 @@ S_SCH_CONTROL rs_SchControl = {
  ********************************************************************************/
  void Sch_Background(void){
  
- 	   	T_UBYTE lub_i, lub_NumberOfTasks;
+ 	   	T_UBYTE lub_i;
+		T_UBYTE lub_NumberOfTasks;
+
  		lub_NumberOfTasks = rps_SchConfig_ptr->SchNumberOfTasks;
  	
  	   for(;;){
@@ -154,7 +146,9 @@ S_SCH_CONTROL rs_SchControl = {
  							Sets the scheduler's counter to 0 and its status to INITIALIZED.
  ********************************************************************************/
  void Sch_Init(const S_SCH_CONFIG *lps_SchConfig){
- 	T_UBYTE lub_i, lub_NumberOfTasks;
+ 	T_UBYTE lub_i;
+	T_UBYTE lub_NumberOfTasks;
+	
  	S_TASK_DESCRIPTOR * lp_TaskDescriptorPtr; 
  	rps_SchConfig_ptr = lps_SchConfig;
  	
@@ -221,7 +215,9 @@ S_SCH_CONTROL rs_SchControl = {
  							the task is marked as READY
  ******************************************************************************/
  void Sch_OSTick(void){
- 	T_UBYTE lub_i, lub_NumberOfTasks;
+ 	T_UBYTE lub_i;
+	T_UBYTE lub_NumberOfTasks;
+	
  	S_TASK_DESCRIPTOR * lp_TaskDescriptorPtr; 
  	
  	/*LED_ON(LED4);*/
