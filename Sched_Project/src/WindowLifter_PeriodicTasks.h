@@ -3,32 +3,32 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        %Sch.h%
+* C Include:        %WindowLifter_PeriodicTasks.h%
 * Instance:         1
 * %version:         1 %
 * %created_by:      Michele Balbi %
-* %date_created:    July 13 2015 %
+* %date_created:    2015 %
 *=============================================================================*/
-/* DESCRIPTION : Header file for the Scheduler's main functionality.          */
+/* DESCRIPTION : Header file for the timer functions.                         */
 /*============================================================================*/
-/* FUNCTION COMMENT :   										              */
-/*                                                                            */
+/* FUNCTION COMMENT :  This files contains the prototypes for the implemented */
+/* timer functions.                                                           */
 /*============================================================================*/
 /*                               OBJECT HISTORY                               */
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Michele Balbi    */
-/* First Draft 																  */
+/*  1.0      | 10/07/2015  |                               | Michele Balbi    */
+/* First Draft.																  */
 /*============================================================================*/
 
-#ifndef SCH_H                               /* To avoid double inclusion */
-#define SCH_H
+#ifndef WINDOWLIFTER_PERIODICTASKS_H                         /* To avoid double inclusion */
+#define WINDOWLIFTER_PERIODICTASKS_H
 
 /* Includes */
 /* -------- */
-#include "Sch_Types.h"
-#include "Sch_Cfg.h"
+#include "conti_typedefs.h"
+#include "WindowLifter_Types.h"
 
 /* Exported types and constants */
 /* ---------------------------- */
@@ -70,16 +70,17 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
- extern void Sch_Init(const S_SCH_CONFIG *lps_SchConfig_Init);
- extern void Sch_Stop(void);
- extern void Sch_OSTick(void);
- extern void Sch_Start(void);
- extern void Sch_Background(void);
- 
+extern void WindowLifter_Task_Polling(void);
+extern void WindowLifter_Task_400MS(void);
+extern void WindowLifter_Task_5S(void);
+
+
 /* Functions macros */
 
 
 /* Exported defines */
+
+
 
 
 #endif

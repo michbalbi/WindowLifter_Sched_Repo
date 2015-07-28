@@ -22,8 +22,8 @@
 /* First Draft 																  */
 /*============================================================================*/
 
-#ifndef _SCH_TASKS_H_                            /* To avoid double inclusion */
-#define _SCH_TASKS_H_
+#ifndef SCH_TASKS_H                            /* To avoid double inclusion */
+#define SCH_TASKS_H
 
 /* Includes */
 /* -------- */
@@ -69,12 +69,10 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
-extern void Sch_Task_3P125MS(void);
-extern void Sch_Task_6P25MS(void);
-extern void Sch_Task_12P5MS(void);
-extern void Sch_Task_25MS(void);
-extern void Sch_Task_50MS(void);
-extern void Sch_Task_100MS(void);
+extern void Sch_Task_1p25MS(void);
+extern void Sch_Task_5MS(void);
+extern void Sch_Task_10MS(void);
+extern void Sch_Task_40MS(void);
 
 /* Functions macros */
 

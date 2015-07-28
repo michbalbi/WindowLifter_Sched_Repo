@@ -66,15 +66,6 @@ const S_SCH_CONFIG *rps_SchConfig_ptr;
 
 S_SCH_TASK_CONTROL *ras_SchTaskControlBlock_ptr;
 
-/*S_SCH_TASK_CONTROL ras_SchTaskControlBlock[] = {
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-	{TASK_STATE_SUSPENDED, (void*)0 },
-};*/
-
 S_SCH_CONTROL rs_SchControl = {
 	0,
 	TASK_BKG,
@@ -118,19 +109,21 @@ S_SCH_CONTROL rs_SchControl = {
  ********************************************************************************/
  void Sch_Background(void){
  
- 	   	T_UBYTE lub_i, lub_NumberOfTasks;
- 		lub_NumberOfTasks = rps_SchConfig_ptr->SchNumberOfTasks;
+ 	   	T_UBYTE lub_i_Background;
+		T_UBYTE lub_NumberOfTasks_Background;
+
+ 		lub_NumberOfTasks_Background = rps_SchConfig_ptr->SchNumberOfTasks;
  	
  	   for(;;){
  	   
- 	   		for(lub_i=0; lub_i<lub_NumberOfTasks; lub_i++){	
+ 	   		for(lub_i_Background=0; lub_i_Background<lub_NumberOfTasks_Background; lub_i_Background++){	
  				
- 				if(ras_SchTaskControlBlock_ptr[lub_i].SchTaskState == TASK_STATE_READY){
+ 				if(ras_SchTaskControlBlock_ptr[lub_i_Background].SchTaskState == TASK_STATE_READY){
  					rs_SchControl.SchStatus = SCH_RUNNING;
  					rs_SchControl.SchTaskRunning = rps_SchConfig_ptr->SchTaskDescriptor->SchTaskId;
- 					ras_SchTaskControlBlock_ptr[lub_i].SchTaskState = TASK_STATE_RUNNING;
- 					(ras_SchTaskControlBlock_ptr[lub_i].TaskFunctionControlPtr)();
- 					ras_SchTaskControlBlock_ptr[lub_i].SchTaskState = TASK_STATE_SUSPENDED;	
+ 					ras_SchTaskControlBlock_ptr[lub_i_Background].SchTaskState = TASK_STATE_RUNNING;
+ 					(ras_SchTaskControlBlock_ptr[lub_i_Background].TaskFunctionControlPtr)();
+ 					ras_SchTaskControlBlock_ptr[lub_i_Background].SchTaskState = TASK_STATE_SUSPENDED;	
  				}	
  			}
  	   		rs_SchControl.SchTaskRunning = TASK_BKG;
@@ -152,25 +145,27 @@ S_SCH_CONTROL rs_SchControl = {
  							Configures the timer used as the system's tick.
  							Sets the scheduler's counter to 0 and its status to INITIALIZED.
  ********************************************************************************/
- void Sch_Init(const S_SCH_CONFIG *lps_SchConfig){
- 	T_UBYTE lub_i, lub_NumberOfTasks;
- 	S_TASK_DESCRIPTOR * lp_TaskDescriptorPtr; 
- 	rps_SchConfig_ptr = lps_SchConfig;
+ void Sch_Init(const S_SCH_CONFIG *lps_SchConfig_Init){
+ 	T_UBYTE lub_i_Init;
+	T_UBYTE lub_NumberOfTasks_Init;
+	
+ 	S_TASK_DESCRIPTOR * lp_TaskDescriptorPtr_Init; 
+ 	rps_SchConfig_ptr = lps_SchConfig_Init;
  	
- 	lp_TaskDescriptorPtr = (S_TASK_DESCRIPTOR *)(lps_SchConfig->SchTaskDescriptor);
- 	lub_NumberOfTasks = lps_SchConfig->SchNumberOfTasks;
+ 	lp_TaskDescriptorPtr_Init = (S_TASK_DESCRIPTOR *)(lps_SchConfig_Init->SchTaskDescriptor);
+ 	lub_NumberOfTasks_Init = lps_SchConfig_Init->SchNumberOfTasks;
  	
- 	ras_SchTaskControlBlock_ptr = (S_SCH_TASK_CONTROL*)MemAlloc(sizeof(S_SCH_TASK_CONTROL)*lub_NumberOfTasks);
+ 	ras_SchTaskControlBlock_ptr = (S_SCH_TASK_CONTROL*)MemAlloc(sizeof(S_SCH_TASK_CONTROL)*lub_NumberOfTasks_Init);
  	
- 	for(lub_i=0; lub_i<lub_NumberOfTasks; lub_i++){
+ 	for(lub_i_Init=0; lub_i_Init<lub_NumberOfTasks_Init; lub_i_Init++){
  		
  		/* Set all tasks to SUSPENDED */
- 		ras_SchTaskControlBlock_ptr[lub_i].SchTaskState = TASK_STATE_SUSPENDED;
- 		ras_SchTaskControlBlock_ptr[lub_i].TaskFunctionControlPtr = lp_TaskDescriptorPtr->TaskFunctionPtr;
- 		lp_TaskDescriptorPtr++;
+ 		ras_SchTaskControlBlock_ptr[lub_i_Init].SchTaskState = TASK_STATE_SUSPENDED;
+ 		ras_SchTaskControlBlock_ptr[lub_i_Init].TaskFunctionControlPtr = lp_TaskDescriptorPtr_Init->TaskFunctionPtr;
+ 		lp_TaskDescriptorPtr_Init++;
  	}
   	
-    TIMER_LOAD_VALUE_CYCLES(49999U,0); /*781.25 us to cycles*/
+    TIMER_LOAD_VALUE_CYCLES(39999U,0); /* 625 us to cycles */
     TIMER_ENABLE_INT(0);
     TIMER_INIT();
   	
@@ -220,25 +215,25 @@ S_SCH_CONTROL rs_SchControl = {
  							the task is marked as READY
  ******************************************************************************/
  void Sch_OSTick(void){
- 	T_UBYTE lub_i, lub_NumberOfTasks;
- 	S_TASK_DESCRIPTOR * lp_TaskDescriptorPtr; 
+ 	T_UBYTE lub_i_OSTick;
+	T_UBYTE lub_NumberOfTasks_OSTick;
+	
+ 	S_TASK_DESCRIPTOR * lp_TaskDescriptorPtr_OSTick; 
  	
  	TIMER_CLEAR_INT_FLAG(0);
- 	lp_TaskDescriptorPtr = (S_TASK_DESCRIPTOR *)(rps_SchConfig_ptr->SchTaskDescriptor);
+ 	lp_TaskDescriptorPtr_OSTick = (S_TASK_DESCRIPTOR *)(rps_SchConfig_ptr->SchTaskDescriptor);
  
  	rs_SchControl.SchCounter++;
- 	lub_NumberOfTasks = rps_SchConfig_ptr->SchNumberOfTasks;
+ 	lub_NumberOfTasks_OSTick = rps_SchConfig_ptr->SchNumberOfTasks;
  	
  	/* Compare counter with each task mask and offset. Mark
  	   task as READY accordingly */   
-   	for(lub_i=0; lub_i<lub_NumberOfTasks; lub_i++){
+   	for(lub_i_OSTick=0; lub_i_OSTick<lub_NumberOfTasks_OSTick; lub_i_OSTick++){
    		
-   		if(((lp_TaskDescriptorPtr->SchTaskMask)&(rs_SchControl.SchCounter))==(lp_TaskDescriptorPtr->SchTaskOffset)){
-   			ras_SchTaskControlBlock_ptr[lub_i].SchTaskState = TASK_STATE_READY;
+   		if(((lp_TaskDescriptorPtr_OSTick->SchTaskMask)&(rs_SchControl.SchCounter))==(lp_TaskDescriptorPtr_OSTick->SchTaskOffset)){
+   			ras_SchTaskControlBlock_ptr[lub_i_OSTick].SchTaskState = TASK_STATE_READY;
    		}
    		
-   		lp_TaskDescriptorPtr++;
-   		
+   		lp_TaskDescriptorPtr_OSTick++;	
    	}
- 	
  }

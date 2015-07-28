@@ -23,12 +23,16 @@
 /*----------------------------------------------------------------------------*/
 /*  1.1      | 06/07/2015  |                               | Michele Balbi    */
 /* Added GPIO macros to control alt functions and parallel writes.            */
+/*----------------------------------------------------------------------------*/
+/*  1.2      | 17/07/2015  |                               | Michele Balbi    */
+/* Added GPIO_Init() function prototype to export it.                         */
 /*============================================================================*/
 
-#ifndef _MPC5606B_GPIO_LIB_
-#define _MPC5606B_GPIO_LIB_
+#ifndef MPC5606B_GPIO_LIB
+#define MPC5606B_GPIO_LIB
 
-
+/* Includes */
+/* -------- */
 #include "MPC5606B.h"
 
 /* Mappping pin number to GPIO[n] */
@@ -204,18 +208,18 @@
 
 */
 
-#define GPIO_AS_OUTPUT(port)			(SIU.PCR[port].R = 0x0200)
-#define GPIO_ALT_MODE_0(port)			(SIU.PCR[port].B.PA = 0)
-#define GPIO_ALT_MODE_1(port)			(SIU.PCR[port].B.PA = 1)
-#define GPIO_ALT_MODE_2(port)			(SIU.PCR[port].B.PA = 2)
-#define GPIO_ALT_MODE_3(port)			(SIU.PCR[port].B.PA = 3)
-#define OUTPUT_HIGH(port)				(SIU.GPDO[port].B.PDO = 1)
-#define OUTPUT_LOW(port)				(SIU.GPDO[port].B.PDO = 0)
+#define GPIO_AS_OUTPUT(port)			(SIU.PCR[(port)].R = 0x0200)
+#define GPIO_ALT_MODE_0(port)			(SIU.PCR[(port)].B.PA = 0)
+#define GPIO_ALT_MODE_1(port)			(SIU.PCR[(port)].B.PA = 1)
+#define GPIO_ALT_MODE_2(port)			(SIU.PCR[(port)].B.PA = 2)
+#define GPIO_ALT_MODE_3(port)			(SIU.PCR[(port)].B.PA = 3)
+#define OUTPUT_HIGH(port)				(SIU.GPDO[(port)].B.PDO = 1)
+#define OUTPUT_LOW(port)				(SIU.GPDO[(port)].B.PDO = 0)
 
-#define GPIO_AS_INPUT(port)				(SIU.PCR[port].R = 0x0103)
-#define INPUT_STATE(port)				(SIU.GPDI[port].B.PDI)
+#define GPIO_AS_INPUT(port)				(SIU.PCR[(port)].R = 0x0103)
+#define INPUT_STATE(port)				(SIU.GPDI[(port)].B.PDI)
 
-#define GPIO_AS_ANALOG(port)			(SIU.PCR[port].R = 0x2000)
+#define GPIO_AS_ANALOG(port)			(SIU.PCR[(port)].R = 0x2000)
 
 /*#define GPIO_PORTA_OUTPUT(value)		(SIU.MPGPDO[0].R = (0xFFFF|value))
 #define GPIO_PORTA_OUTPUT(value)		(SIU.MPGPDO[0].R = (0xFFFF|value))
@@ -224,13 +228,59 @@
 
 /* LED Macros */
 
-#define LED_ON(channel)				(SIU.GPDO[channel].B.PDO = 0)
-#define LED_OFF(channel)            (SIU.GPDO[channel].B.PDO = 1)
-#define LED_TOGGLE(channel)         (SIU.GPDO[channel].B.PDO ^= 1) 
+#define LED_ON(channel)				(SIU.GPDO[(channel)].B.PDO = 0)
+#define LED_OFF(channel)            (SIU.GPDO[(channel)].B.PDO = 1)
+#define LED_TOGGLE(channel)         (SIU.GPDO[(channel)].B.PDO ^= 1) 
 
+
+/* Exported types and constants */
+/* ---------------------------- */
+
+/* Types definition */
+/* typedef */
+
+
+/*==================================================*/ 
+/* Declaration of exported constants                */
+/*==================================================*/ 
+/* BYTE constants */
+
+
+/* WORD constants */
+
+
+/* LONG and STRUCTURE constants */
+
+
+
+/*======================================================*/ 
+/* Definition of RAM variables                          */
+/*======================================================*/ 
+/* BYTES */
+
+
+/* WORDS */
+
+
+/* LONGS and STRUCTURES */
+
+
+/*======================================================*/ 
+/* close variable declaration sections                  */
+/*======================================================*/ 
+
+/* Exported functions prototypes and macros */
+/* ---------------------------------------- */
+
+/* Functions prototypes */
+extern void GPIO_Init(void);
+
+/* Functions macros */
+
+
+/* Exported defines */
 
 
 
 
 #endif
-

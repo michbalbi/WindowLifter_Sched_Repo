@@ -25,8 +25,8 @@
 /* Formatting to pass C code review.                                          */
 /*============================================================================*/
 
-#ifndef _CLK_INIT_H_
-#define _CLK_INIT_H_
+#ifndef CLK_INIT_H
+#define CLK_INIT_H
 
 /* Includes */
 /* -------- */

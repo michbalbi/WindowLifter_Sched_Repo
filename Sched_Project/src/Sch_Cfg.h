@@ -22,8 +22,8 @@
 /* First Draft 																  */
 /*============================================================================*/
 
-#ifndef _SCH_CFG__H_                               /* To avoid double inclusion */
-#define _SCH_CFG__H_
+#ifndef SCH_CFG_H                               /* To avoid double inclusion */
+#define SCH_CFG_H
 
 /* Includes */
 /* -------- */

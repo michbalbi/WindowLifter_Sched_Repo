@@ -29,7 +29,6 @@
 #include "MPC5606B_GPIO_lib.h"
 #include "MPC5606B_ClkInit.h"
 #include "MPC5606B_INTERRUPTS_lib.h"
-#include "MPC5606B_PIT_lib.h"
 #include "MemAlloc_Cfg.h"
 #include "Sch.h"
 
@@ -77,37 +76,17 @@
 /* Exported functions prototypes */
 /* ----------------------------- */
 
+
 /* Inline functions */
 /* ---------------- */
-/**************************************************************
- *  Name                 : inline_func	2
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
 
 
 /* Private functions */
 /* ----------------- */
-/**************************************************************
- *  Name                 : private_func
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
 
 
 /* Exported functions */
 /* ------------------ */
-/**************************************************************
- *  Name                 :	export_func
- *  Description          :
- *  Parameters           :  [Input, Output, Input / output]
- *  Return               :
- *  Critical/explanation :    [yes / No]
- **************************************************************/
 
 
 
@@ -116,48 +95,39 @@
  *  Name                 :	main
  *  Description          :
  *  Parameters           :	void
- *  Return               :	void
+ *  Return               :	int
  *  Critical/explanation :  The main routine initializes the
  							peripherals used in this system.
  **************************************************************/
 int main(void) {
 	
+	MemAllocInit(&MemAllocConfig);	/* Initialization of Memory Allocation library */
+	
 	initModesAndClock();    /* Initialize mode entries and system clock */
 	disableWatchdog();      /* Disable watchdog */
 	initPeriClkGen();       /* Initialize peripheral clock generation for DSPIs */
 	
-	MemAllocInit(&MemAllocConfig);
-	
-	/*GPIO_AS_OUTPUT(PC2);
-	GPIO_AS_OUTPUT(PC3);
-	GPIO_AS_OUTPUT(PC4);
-	GPIO_AS_OUTPUT(PC5);
-	GPIO_AS_OUTPUT(PC6);
-	GPIO_AS_OUTPUT(PC7);
-	
-	OUTPUT_LOW(PC2);
-	OUTPUT_LOW(PC3);
-	OUTPUT_LOW(PC4);
-	OUTPUT_LOW(PC5);
-	OUTPUT_LOW(PC6);
-	OUTPUT_LOW(PC7);*/
-	
-	GPIO_AS_OUTPUT(LED1);
-	GPIO_AS_OUTPUT(LED2);
-	GPIO_AS_OUTPUT(LED3);
-	GPIO_AS_OUTPUT(LED4);
+	/* GPIO initilization. Outputs and starting value, and inputs */
+	GPIO_Init();
 	
 	/* Interrupts init, SW Mode */
     INT_SW_VECTOR_MODE();
     
+    /* Scheduler initialization routine */
     Sch_Init(&cs_SchConfig);
     
-    INTC_InstallINTCInterruptHandler(Sch_OSTick, PIT0_Vector, PRIORITY13);
+    /* Interrupts installation and initialization */
+    INTC_InstallINTCInterruptHandler(&Sch_OSTick, PIT0_Vector, PRIORITY13);
     INT_LOWER_CPR(PRIORITY0);
     INTC_InitINTCInterrupts(); 
     
+    /* Scheduler start routine */
     Sch_Start(); 
 	
-	for (;;) { 	} /* Execution shall never reach this for*/
+	for(;;){
+		; /* Execution shall never reach this loop*/
+	}
+	
+	return 0;
 }
 

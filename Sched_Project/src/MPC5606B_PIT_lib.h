@@ -22,28 +22,28 @@
 /* First Draft of file.                                          			  */
 /*============================================================================*/
 
-#ifndef _MPC5606B_PIT_LIB_
-#define _MPC5606B_PIT_LIB_
+#ifndef MPC5606B_PIT_LIB
+#define MPC5606B_PIT_LIB
 
 #include "MPC5606B.h"
 
-#define CLK_FREQ 	64000000U
+#define CLK_FREQ 	64000000u
 
 /* Timer Macros */
 
-#define TIMER_INIT()							(PIT.PITMCR.R = 0)
-#define TIMER_LOAD_VALUE_CYCLES(ticks,timer)	(PIT.CH[timer].LDVAL.R = ticks)
-#define TIMER_LOAD_VALUE_MS(ms,timer)			(PIT.CH[timer].LDVAL.R = (ms*(CLK_FREQ/1000U))-1U)
-#define TIMER_LOAD_VALUE_US(us,timer)			(PIT.CH[timer].LDVAL.R = (us*(CLK_FREQ/1000000U))-1U)
-#define TIMER_GET_VALUE_CYCLES(timer)			(PIT.CH[timer].CVAL.R)
-#define TIMER_GET_VALUE_MS(timer)				((PIT.CH[timer].LDVAL.R - PIT.CH[timer].CVAL.R)/(CLK_FREQ/1000U))
+#define TIMER_INIT()							(PIT.PITMCR.R = 0u)
+#define TIMER_LOAD_VALUE_CYCLES(ticks,timer)	(PIT.CH[(timer)].LDVAL.R = (ticks))
+#define TIMER_LOAD_VALUE_MS(ms,timer)			(PIT.CH[(timer)].LDVAL.R = ((ms)*(CLK_FREQ/1000u))-1u)
+#define TIMER_LOAD_VALUE_US(us,timer)			(PIT.CH[(timer)].LDVAL.R = ((us)*(CLK_FREQ/1000000u))-1u)
+#define TIMER_GET_VALUE_CYCLES(timer)			(PIT.CH[(timer)].CVAL.R)
+#define TIMER_GET_VALUE_MS(timer)				((PIT.CH[(timer)].LDVAL.R - PIT.CH[(timer)].CVAL.R)/(CLK_FREQ/1000u))
 
-#define TIMER_ENABLE_INT(timer)				(PIT.CH[timer].TCTRL.B.TIE = 1)
-#define TIMER_DISABLE_INT(timer)			(PIT.CH[timer].TCTRL.B.TIE = 0)
-#define TIMER_START(timer)					(PIT.CH[timer].TCTRL.B.TEN = 1)
-#define TIMER_STOP(timer)					(PIT.CH[timer].TCTRL.B.TEN = 0)
-#define TIMER_IS_RUNNING(timer)				(PIT.CH[timer].TCTRL.B.TEN)
-#define TIMER_CLEAR_INT_FLAG(timer)			(PIT.CH[timer].TFLG.B.TIF = 1)
+#define TIMER_ENABLE_INT(timer)				(PIT.CH[(timer)].TCTRL.B.TIE = 1u)
+#define TIMER_DISABLE_INT(timer)			(PIT.CH[(timer)].TCTRL.B.TIE = 0u)
+#define TIMER_START(timer)					(PIT.CH[(timer)].TCTRL.B.TEN = 1u)
+#define TIMER_STOP(timer)					(PIT.CH[(timer)].TCTRL.B.TEN = 0u)
+#define TIMER_IS_RUNNING(timer)				(PIT.CH[(timer)].TCTRL.B.TEN)
+#define TIMER_CLEAR_INT_FLAG(timer)			(PIT.CH[(timer)].TFLG.B.TIF = 1u)
 
 
 #endif

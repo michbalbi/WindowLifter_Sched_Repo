@@ -97,19 +97,19 @@
  *  Critical/explanation :  yes
  **************************************************************/
 void initModesAndClock(void) {
-  ME.MER.R = 0x0000001D;          /* Enable DRUN, RUN0, SAFE, RESET modes */
+  ME.MER.R = 0x0000001Du;          /* Enable DRUN, RUN0, SAFE, RESET modes */
                                   /* Initialize PLL before turning it on: */
-  CGM.FMPLL_CR.R = 0x02400100;    /* 8 MHz xtal: Set PLL0 to 64 MHz */
-  								  //  Divide by 64, 8 in ODF, 1 in IDF
-  ME.RUN[0].R = 0x001F0074;       /* RUN0 cfg: 16MHzIRCON,OSC0ON,PLL0ON,syclk=PLL0 */
-  ME.RUNPC[1].R = 0x00000010; 	  /* Peri. Cfg. 1 settings: only run in RUN0 mode */
+  CGM.FMPLL_CR.R = 0x02400100u;    /* 8 MHz xtal: Set PLL0 to 64 MHz */
+  								  /*  Divide by 64, 8 in ODF, 1 in IDF */
+  ME.RUN[0].R = 0x001F0074u;       /* RUN0 cfg: 16MHzIRCON,OSC0ON,PLL0ON,syclk=PLL0 */
+  ME.RUNPC[1].R = 0x00000010u; 	  /* Peri. Cfg. 1 settings: only run in RUN0 mode */
   
-  ME.PCTL[PCTL_SIUL].R = 0x01; 	  /* MPC56xxB/S SIU: select ME.RUNPC[1] */	  
-  ME.PCTL[PCTL_PIT].R = 0x01;
+  ME.PCTL[PCTL_SIUL].R = 0x01u; 	  /* MPC56xxB/S SIU: select ME.RUNPC[1] */	  
+  ME.PCTL[PCTL_PIT].R = 0x01u;
                                   
   /* Mode Transition to enter RUN0 mode: */
-  ME.MCTL.R = 0x40005AF0;         /* Enter RUN0 Mode & Key */
-  ME.MCTL.R = 0x4000A50F;         /* Enter RUN0 Mode & Inverted Key */  
+  ME.MCTL.R = 0x40005AF0u;         /* Enter RUN0 Mode & Key */
+  ME.MCTL.R = 0x4000A50Fu;         /* Enter RUN0 Mode & Inverted Key */  
   while (ME.GS.B.S_MTRANS) {}     /* Wait for mode transition to complete */    
                                   /* Note: could wait here using timer and/or I_TC IRQ */
   while(ME.GS.B.S_CURRENTMODE != 4) {} /* Verify RUN0 is the current mode */
@@ -126,7 +126,7 @@ void initModesAndClock(void) {
  **************************************************************/
  void initPeriClkGen(void) {
 /* Use the following code as required for MPC56xxB or MPC56xxS:*/
-  CGM.SC_DC[2].R = 0x80;   /* MPC56xxB/S: Enable peri s	et 3 sysclk divided by 1 */
+  CGM.SC_DC[2].R = 0x80u;   /* MPC56xxB/S: Enable peri s	et 3 sysclk divided by 1 */
 }
 
 
@@ -138,7 +138,7 @@ void initModesAndClock(void) {
  *  Critical/explanation :  yes
  **************************************************************/
 void disableWatchdog(void) {
-  SWT.SR.R = 0x0000c520;     /* Write keys to clear soft lock bit */
-  SWT.SR.R = 0x0000d928; 
-  SWT.CR.R = 0x8000010A;     /* Clear watchdog enable (WEN) */
+  SWT.SR.R = 0x0000c520u;     /* Write keys to clear soft lock bit */
+  SWT.SR.R = 0x0000d928u; 
+  SWT.CR.R = 0x8000010Au;     /* Clear watchdog enable (WEN) */
 } 

@@ -3,13 +3,13 @@
 /*============================================================================*/
 /*                        OBJECT SPECIFICATION                                */
 /*============================================================================*
-* C Include:        %Sch.h%
+* C Include:        %WindowLifter.h%
 * Instance:         1
-* %version:         1 %
-* %created_by:      Michele Balbi %
-* %date_created:    July 13 2015 %
+* %version:         1.2 %
+* %created_by:      Luis Medina  %
+* %date_created:    July 17 2015 %
 *=============================================================================*/
-/* DESCRIPTION : Header file for the Scheduler's main functionality.          */
+/* DESCRIPTION : Header file for the Window Lifter's main functionality.      */
 /*============================================================================*/
 /* FUNCTION COMMENT :   										              */
 /*                                                                            */
@@ -18,17 +18,22 @@
 /*============================================================================*/
 /*  REVISION |   DATE      |                               |      AUTHOR      */
 /*----------------------------------------------------------------------------*/
-/*  1.0      | 13/07/2015  |                               | Michele Balbi    */
+/*  1.0      | 17/07/2015  |                               | Luis Medina      */
 /* First Draft 																  */
+/*----------------------------------------------------------------------------*/
+/*  1.1      | 20/07/2015  |                               | Michele Balbi    */
+/* Added prototype for exported function CheckLimits. Removed StopMovement.   */
+/*----------------------------------------------------------------------------*/
+/*  1.2      | 27/07/2015  |                               | Luis Medina      */
+/* Cleaner code. Deleted commented code due to MISRA checks.				  */
 /*============================================================================*/
 
-#ifndef SCH_H                               /* To avoid double inclusion */
-#define SCH_H
+#ifndef WINDOWLIFTER_H                               /* To avoid double inclusion */
+#define WINDOWLIFTER_H
 
 /* Includes */
 /* -------- */
-#include "Sch_Types.h"
-#include "Sch_Cfg.h"
+#include "WindowLifter_Types.h"
 
 /* Exported types and constants */
 /* ---------------------------- */
@@ -55,12 +60,11 @@
 /*======================================================*/ 
 /* BYTES */
 
-
 /* WORDS */
 
 
 /* LONGS and STRUCTURES */
-
+extern E_WINDOWLIFTER_CURRENTSTATE re_currentstate;
 
 /*======================================================*/ 
 /* close variable declaration sections                  */
@@ -70,11 +74,9 @@
 /* ---------------------------------------- */
 
 /* Functions prototypes */
- extern void Sch_Init(const S_SCH_CONFIG *lps_SchConfig_Init);
- extern void Sch_Stop(void);
- extern void Sch_OSTick(void);
- extern void Sch_Start(void);
- extern void Sch_Background(void);
+extern void WindowLifter_CheckLimits(void);
+extern void WindowLifter_Move1LevelUp(void);
+extern void WindowLifter_Move1LevelDown(void);
  
 /* Functions macros */
 
