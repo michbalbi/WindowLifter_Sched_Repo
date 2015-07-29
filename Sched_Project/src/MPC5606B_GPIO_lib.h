@@ -208,7 +208,7 @@
 
 */
 
-#define GPIO_AS_OUTPUT(port)			(SIU.PCR[(port)].R = 0x0200)
+/*#define GPIO_AS_OUTPUT(port)			(SIU.PCR[(port)].R = 0x0200)
 #define GPIO_ALT_MODE_0(port)			(SIU.PCR[(port)].B.PA = 0)
 #define GPIO_ALT_MODE_1(port)			(SIU.PCR[(port)].B.PA = 1)
 #define GPIO_ALT_MODE_2(port)			(SIU.PCR[(port)].B.PA = 2)
@@ -219,7 +219,7 @@
 #define GPIO_AS_INPUT(port)				(SIU.PCR[(port)].R = 0x0103)
 #define INPUT_STATE(port)				(SIU.GPDI[(port)].B.PDI)
 
-#define GPIO_AS_ANALOG(port)			(SIU.PCR[(port)].R = 0x2000)
+#define GPIO_AS_ANALOG(port)			(SIU.PCR[(port)].R = 0x2000)*/
 
 /*#define GPIO_PORTA_OUTPUT(value)		(SIU.MPGPDO[0].R = (0xFFFF|value))
 #define GPIO_PORTA_OUTPUT(value)		(SIU.MPGPDO[0].R = (0xFFFF|value))
@@ -228,9 +228,9 @@
 
 /* LED Macros */
 
-#define LED_ON(channel)				(SIU.GPDO[(channel)].B.PDO = 0)
+/*#define LED_ON(channel)				(SIU.GPDO[(channel)].B.PDO = 0)
 #define LED_OFF(channel)            (SIU.GPDO[(channel)].B.PDO = 1)
-#define LED_TOGGLE(channel)         (SIU.GPDO[(channel)].B.PDO ^= 1) 
+#define LED_TOGGLE(channel)         (SIU.GPDO[(channel)].B.PDO ^= 1) */
 
 
 /* Exported types and constants */
@@ -274,6 +274,7 @@
 
 /* Functions prototypes */
 extern void GPIO_Init(void);
+/*extern void GPIO_As_Output(T_UBYTE lub_port);*/
 
 /* Functions macros */
 

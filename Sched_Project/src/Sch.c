@@ -114,7 +114,7 @@ S_SCH_CONTROL rs_SchControl = {
 
  		lub_NumberOfTasks_Background = rps_SchConfig_ptr->SchNumberOfTasks;
  	
- 	   for(;;){
+ 	   while(1){
  	   
  	   		for(lub_i_Background=0; lub_i_Background<lub_NumberOfTasks_Background; lub_i_Background++){	
  				

@@ -124,7 +124,7 @@ int main(void) {
     /* Scheduler start routine */
     Sch_Start(); 
 	
-	for(;;){
+	while(1){
 		; /* Execution shall never reach this loop*/
 	}
 	
